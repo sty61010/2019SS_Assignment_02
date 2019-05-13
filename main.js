@@ -6,7 +6,7 @@ var stateText;
 
 var main = {
     preload: function() {
-        // Loat game sprites.
+        /// Loat game image
         game.load.image('background', 'assets/background.png');
         game.load.image('pixel', 'assets/pixel.png');
         game.load.image('live', 'assets/live.png');
@@ -15,12 +15,24 @@ var main = {
         game.load.spritesheet('enemy', 'assets/enemy.png', 53, 86);
         game.load.spritesheet('explosion', 'assets/explosion.png', 128, 128);
         game.load.spritesheet('player', 'assets/player.png', 144, 128);
-        game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
-        game.load.spritesheet('bullet2', 'assets/bomb1.png', 282, 234);
+        // game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
+        game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
         game.load.spritesheet('coin', 'assets/coin.png', 32, 35);
+        game.load.spritesheet('boss', 'assets/boss.png', 70, 67);//////
 
+        ///sound
+        game.load.audio('player_fire', 'assets/flame.wav');
+        game.load.audio('enemy_fire', 'assets/enemy-fire.wav');
+        game.load.audio('enemy_explosion', 'assets/explosion.wav');
+        game.load.audio('player_explosion', 'assets/dragon_pain.wav');
+        game.load.audio('power_up', 'assets/powerup.wav');
+        game.load.audio('coin', 'assets/coin.wav');
+        game.load.audio('magnet', 'assets/magnet.wav');
+        game.load.audio('roar', 'assets/dragon_roar.wav');
         
     },
+    ///create
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
     create: function() {
         ///phicics
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -34,8 +46,12 @@ var main = {
         this.createBullet();
         ///obstacle
         this.createObstacle();
+        ///boss
+        this.createBoss();///
         ///coin
         this.createCoin();
+        ///sound
+        this.createSound();
         ///particle
 
         ///control
@@ -56,6 +72,26 @@ var main = {
         stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Georgia', fill: '#000' });
         stateText.anchor.setTo(0.5, 0.5);
         stateText.visible = false;
+    },
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    createBoss:function(){
+        this.boss = game.add.sprite(400, 50, 'boss');
+        this.boss.anchor.setTo(0.5);
+        this.boss.animations.add('boss_fly', [0, 1, 2], 5, true);
+        this.boss.play('boss_fly');
+        game.physics.arcade.enable(this.boss);
+        this.boss.body.collideWorldBounds = true;
+        this.boss.enableBody = true;
+    },
+    createSound:function(){
+        this.player_fireSound=game.add.audio('player_fire');
+        this.enemy_fireSound=game.add.audio('enemy_fire');
+        this.player_explosionSound=game.add.audio('player_explosion');
+        this.enemy_explosionSound=game.add.audio('enemy_explosion');
+        this.power_upSound=game.add.audio('power_up');
+        this.coinSound=game.add.audio('coin');
+        this.magnetSound=game.add.audio('magnet');
+        this.roarSound=game.add.audio('roar');
     },
     createParitcle:function(){
         this.particlePool=game.add.group();
@@ -137,6 +173,8 @@ var main = {
         this.nextcoinAt = 0;
         this.coinDelay = 5000;
     },
+    ///update
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
     update: function() {
         ///  Scroll the background
         this.bg.tilePosition.y += 2;        
@@ -152,11 +190,18 @@ var main = {
         game.physics.arcade.overlap(this.player, this.enemyPool, this.playerHit, null, this);
         game.physics.arcade.overlap(this.bulletPool, this.enemyPool, this.enemyHit, null, this);
         game.physics.arcade.overlap(this.enemyPool, this.obstaclePool, this.obstacleHit, null, this);
-        game.physics.arcade.collide(this.player, this.obstaclePool, null, null, this);
+        game.physics.arcade.collide(this.player, this.obstaclePool, this.playerMagnet, null, this);
         game.physics.arcade.collide(this.player, this.coinPool, this.coinHit, null, this);
         // game.physics.arcade.overlap(this.enemy, this.emitter, null, null,this);
     }, 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    playerMagnet:function(){
+        this.magnetSound.play();
+    },
     playerExplosion: function() {
+        ///sound
+        this.roarSound.play();
+        ///emitter
         this.emitter = game.add.emitter(0, 0, 150);
         this.emitter.makeParticles('pixel');
         this.emitter.setYSpeed(-500, 500);
@@ -167,7 +212,6 @@ var main = {
         this.emitter.y = this.player.y; 
         this.emitter.start(true, 800, null, 15);
     },
-
     GenerateObstacle: function(){
         if (this.nextobstacleAt<game.time.now && this.obstaclePool.countDead()>0) {
             this.nextobstacleAt = game.time.now + this.obstacleDelay;
@@ -223,9 +267,10 @@ var main = {
         if (game.input.keyboard.isDown(Phaser.Keyboard.Z) ) {
             this.playerExplosion();
         }
- 
     },
     coinHit:function(play,coin){
+        ///sound
+        this.coinSound.play();
         ///Increase the score
         score += 20;
         scoreText.text = scoreString + score;
@@ -239,10 +284,11 @@ var main = {
         ///kill
         coin.animations.add('coin_hit',[6, 7, 8, 9, 10, 11], 20, true);
         coin.play('coin_hit');
-
         coin.kill();
     },
     obstacleHit: function(enemy, obstacle) { 
+        ///sound
+        this.magnetSound.play();
         ///Increase the score
         score += 100;
         scoreText.text = scoreString + score;
@@ -262,10 +308,11 @@ var main = {
         explosion.anchor.setTo(0.5);
         explosion.animations.add('boom');
         explosion.play('boom', 15, false, true);
-        enemy.kill();;
-
+        enemy.kill();
     },
     enemyHit: function(bullet, enemy) {
+        ///sound
+        this.enemy_explosionSound.play();
         ///Increase the score
         score += 10;
         scoreText.text = scoreString + score;
@@ -288,6 +335,8 @@ var main = {
         enemy.kill();
     },
     playerHit: function(player, enemy) { 
+        ///sound
+        this.player_explosionSound.play();
         enemy.kill();
         ///explosioin
         var explosion = game.add.sprite(player.x, player.y, 'explosion');
@@ -309,6 +358,9 @@ var main = {
         }
     },
     playerFire: function() { 
+        //sound
+        this.player_fireSound.play();
+
         if (!this.player.alive || this.nextShotAt>game.time.now)
             return;
         if (this.bulletPool.countDead()==0)
