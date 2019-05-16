@@ -5,6 +5,7 @@ var lives;
 var stateText;
 
 var main = {
+    
     preload: function() {
         /// Loat game image
         game.load.image('background', 'assets/background.png');
@@ -18,7 +19,8 @@ var main = {
         // game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
         game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
         game.load.spritesheet('coin', 'assets/coin.png', 32, 35);
-        game.load.spritesheet('boss', 'assets/boss.png', 70, 67);//////
+        // game.load.spritesheet('boss', 'assets/boss.png', 65, 78);//////
+        game.load.spritesheet('boss', 'assets/boss.png', 65, 78);
 
         ///sound
         game.load.audio('player_fire', 'assets/flame.wav');
@@ -47,7 +49,7 @@ var main = {
         ///obstacle
         this.createObstacle();
         ///boss
-        this.createBoss();///
+        // this.createBoss();
         ///coin
         this.createCoin();
         ///sound
@@ -77,11 +79,12 @@ var main = {
     createBoss:function(){
         this.boss = game.add.sprite(400, 50, 'boss');
         this.boss.anchor.setTo(0.5);
-        this.boss.animations.add('boss_fly', [0, 1, 2], 5, true);
+        this.boss.animations.add('boss_fly', [8, 9, 10, 11, 12, 13], 5, true);
         this.boss.play('boss_fly');
         game.physics.arcade.enable(this.boss);
         this.boss.body.collideWorldBounds = true;
         this.boss.enableBody = true;
+        this.boss.scale.setTo(4, 4);
     },
     createSound:function(){
         this.player_fireSound=game.add.audio('player_fire');
@@ -143,7 +146,7 @@ var main = {
             enemy.animations.add('enemy_fly',[0, 1, 2, 3, 4], 15, true);
         });
         this.nextEnemyAt = 0;
-        this.enemyDelay = 1500;
+        this.enemyDelay = 500;
     },
     createBullet:function(){
         this.bulletPool = game.add.group();
@@ -237,7 +240,7 @@ var main = {
         if (this.nextcoinAt<game.time.now && this.coinPool.countDead()>0) {
             this.nextcoinAt = game.time.now + this.coinDelay;
             var coin = this.coinPool.getFirstExists(false);
-            coin.reset(0, game.rnd.integerInRange(20, 580));
+            coin.reset(0, game.rnd.integerInRange(20, 20));
             coin.body.velocity.y = game.rnd.integerInRange(50, 90);
             coin.body.velocity.x = game.rnd.integerInRange(30, 90);
             coin.play('coin_fly');
@@ -371,7 +374,6 @@ var main = {
         bullet.body.velocity.y = -500;
         bullet.play('bullet',true,true);
     },
-
 
 };
 
