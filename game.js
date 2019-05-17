@@ -8,8 +8,8 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas');
 // game.global = { score: 0 };
 // Add all the states
 game.state.add('start', startState);
-// game.state.add('setting', settingState);
 game.state.add('play', playState);
+game.state.add('setting', settingState);
 
 game.state.add('end', endState);
 

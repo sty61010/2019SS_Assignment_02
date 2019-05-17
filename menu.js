@@ -33,7 +33,7 @@ var startState = {
         game.state.start('play');
     },
     settingClick:function(){
-        game.state.start('setting');
+        // game.state.start('select');
     },
     credictClick:function(){
 

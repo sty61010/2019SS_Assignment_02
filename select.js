@@ -17,24 +17,38 @@ var endState = {
         this.play_bt = game.add.button(game.world.centerX - 295, 100, 'play_bt', this.playClick, this, 1, 0, 0);
         this.setting_bt = game.add.button(game.world.centerX - 295, 200, 'setting_bt', this.settingClick, this, 1, 0, 0);
 
+        this.play_bt.onInputOver.add(this.buttonOver,this);
+        this.setting_bt.onInputOver.add(this.buttonOver,this);
+
+        stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Georgia', fill: '#000' });
+        stateText.anchor.setTo(0.5, 0.5);
+        stateText.visible = false;
     },
     loseScreen:function(){
+        // background
         this.lose_bg=game.add.image(0,0,'lose_bg');
         this.lose_bg.scale.setTo(0.5,0.5);
     },
     winScreen:function(){
+        // background 
+        this.win_bg=game.add.image(-200,0,'win_bg');
+        this.win_bg.scale.setTo(0.68,0.68);
+
         scoreText.text = scoreString + score;
         stateText.text = " You Won \n";
         stateText.visible = true;
-        this.win_bg=game.add.image(-200,0,'win_bg');
-        this.win_bg.scale.setTo(0.68,0.68);
+    },
+    buttonOver:function(){
+        this.buttonSound=game.add.audio('button_sound');
+        this.buttonSound.play();
     },
     playClick:function(){
         score=0;
+        outcome=0;
         game.state.start('play');
     },
     settingClick:function(){
-        // game.start.start('select');
+        game.state.start('setting');
     },
     update: function() {
 
