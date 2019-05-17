@@ -1,16 +1,9 @@
-var score = 0;
-var scoreString = '';
-var scoreText;
-var lives;
-var stateText;
 
-var play = {
-    
-
+var playState = { 
     preload: function() {
         /// Loat game image
         game.load.image('background', 'assets/background.png');
-        game.load.image('pixel', 'assets/pixel.png');
+        game.load.image('pixel', 'assets/flame.png');
         game.load.image('live', 'assets/live.png');
         /// Load block spritesheet.
         game.load.spritesheet('obstacle', 'assets/obstacle.png', 46, 100);
@@ -34,7 +27,7 @@ var play = {
         game.load.audio('power_up', 'assets/powerup.wav');
         game.load.audio('coin', 'assets/coin.wav');
         game.load.audio('magnet', 'assets/magnet.wav');
-        game.load.audio('roar', 'assets/dragon_roar.wav');
+        game.load.audio('roar', 'assets/ace-bomb.wav');
         
     },
     ///create
@@ -103,7 +96,7 @@ var play = {
     createParitcle:function(){
         this.particlePool=game.add.group();
         this.particlePool=enableBody=true;
-        // this.particlePool.createMultiple()
+        this.particlePool.createMultiple()
         this.particlePool.setAll('anchor.x',0.5);
         this.particlePool.setAll('anchor.y',0.5);
         ///emitter
@@ -112,6 +105,7 @@ var play = {
         this.emitter.setYSpeed(-500, 500);
         this.emitter.setXSpeed(-500, 500);
         this.emitter.setScale(2, 0, 2, 0, 800);
+        // this.emitter.scale.setTo(0.001,0.001);
         this.emitter.gravity = 0;
     },
     createPlayer:function(){
@@ -216,6 +210,8 @@ var play = {
         this.emitter.setXSpeed(-500, 500);
         this.emitter.setScale(2, 0, 2, 0, 800);
         this.emitter.gravity = 0;
+        // this.emitter.scale.setTo(0.1,0.1);
+
         this.emitter.x = this.player.x;
         this.emitter.y = this.player.y; 
         this.emitter.start(true, 800, null, 15);
@@ -275,6 +271,26 @@ var play = {
         if (game.input.keyboard.isDown(Phaser.Keyboard.Z) ) {
             this.playerExplosion();
         }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.X) ) {
+
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.C) ) {
+
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.W) ) {
+            this.cheetingWin();
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.L) ) {
+            this.cheetingLose();
+        }
+    },
+    cheetingWin:function(){
+        outcome=1;
+        game.state.start('end');
+    },
+    cheetingLose:function(){
+        outcome=0;
+        game.state.start('end');
     },
     coinHit:function(play,coin){
         ///sound
@@ -284,10 +300,13 @@ var play = {
         scoreText.text = scoreString + score;
         if (score>=1000)
         {
-            score += 1000;
+
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
             stateText.visible = true;
+
+            outcome=1;
+            game.state.start('end');
         }
         ///kill
         coin.animations.add('coin_hit',[6, 7, 8, 9, 10, 11], 20, true);
@@ -302,11 +321,12 @@ var play = {
         scoreText.text = scoreString + score;
         if (score>=1000)
         {
-            score += 1000;
             scoreText.text = scoreString + score;
-
             stateText.text = " You Won, \n Click to restart";
             stateText.visible = true;
+
+            outcome=1;
+            game.state.start('end');
         }
         ///
         enemy.animations.add('enemy_hit',[5, 6], 20, true);
@@ -326,10 +346,12 @@ var play = {
         scoreText.text = scoreString + score;
         if (score>=1000)
         {
-            score += 1000;
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
             stateText.visible = true;
+
+            outcome=1;
+            game.state.start('end');
         }
         ///kill
         enemy.animations.add('enemy_hit',[5, 6], 20, true);
@@ -363,6 +385,9 @@ var play = {
             player.kill();
             stateText.text=" GAME OVER \n Click to restart";
             stateText.visible = true;
+
+            outcome=0;
+            game.state.start('end');
         }
     },
     playerFire: function() { 
@@ -383,9 +408,6 @@ var play = {
 
 };
 
-// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas');
-// game.state.add('main', main);
-// game.state.start('main');
 
 
 
