@@ -40,7 +40,7 @@ var settingState = {
         game.state.start('play');
     },
     lockClick:function(){
-        // game.start.start('select');
+        game.state.start('menu');
     },
     musicClick:function(){
 

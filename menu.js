@@ -1,4 +1,4 @@
-var startState = {
+var menuState = {
     preload: function() {
         game.load.image('bg', 'assets/start.jpg');
         game.load.spritesheet('play_bt', 'assets/playbutton.png', 249, 83);
@@ -9,15 +9,15 @@ var startState = {
 
     },
     create: function() {
-        game.add.image(0,0,'bg');
-        
+        this.bg=game.add.image(0,0,'bg');
+        this.bg.alpha=1.4;
         this.play_bt = game.add.button(game.world.centerX - 295, 100, 'play_bt', this.playClick, this, 1, 0, 0);
         this.setting_bt = game.add.button(game.world.centerX - 295, 170, 'setting_bt', this.settingClick, this, 1, 0, 0);
-        this.credict_bt = game.add.button(game.world.centerX - 295, 270, 'credict_bt', this.credictClick, this, 1, 0, 0);
+        // this.credict_bt = game.add.button(game.world.centerX - 295, 270, 'credict_bt', this.credictClick, this, 1, 0, 0);
 
         this.play_bt.onInputOver.add(this.buttonOver,this);
         this.setting_bt.onInputOver.add(this.buttonOver,this);
-        this.credict_bt.onInputOver.add(this.buttonOver,this);
+        // this.credict_bt.onInputOver.add(this.buttonOver,this);
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) ) {
             this.playClick();
@@ -33,7 +33,7 @@ var startState = {
         game.state.start('play');
     },
     settingClick:function(){
-        // game.state.start('select');
+        game.state.start('setting');
     },
     credictClick:function(){
 

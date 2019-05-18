@@ -1,5 +1,5 @@
 
-var level1State = { 
+var playState = { 
     preload: function() {
         /// Loat game image
         game.load.image('background', 'assets/background.png');
@@ -27,7 +27,7 @@ var level1State = {
         game.load.audio('power_up', 'assets/powerup.wav');
         game.load.audio('coin', 'assets/coin.wav');
         game.load.audio('magnet', 'assets/magnet.wav');
-        game.load.audio('roar', 'assets/ace_firering.wav');
+        game.load.audio('roar', 'assets/ace-bomb.wav');
         
     },
     ///create
@@ -52,8 +52,7 @@ var level1State = {
         ///sound
         this.createSound();
         ///particle
-        ///Zduration
-        this.Zduration=0;
+
         ///control
         this.cursors = game.input.keyboard.createCursorKeys();
         ///score
@@ -204,7 +203,6 @@ var level1State = {
     playerExplosion: function() {
         ///sound
         this.roarSound.play();
-
         ///emitter
         this.emitter = game.add.emitter(0, 0, 150);
         this.emitter.makeParticles('pixel');
@@ -271,7 +269,6 @@ var level1State = {
             this.playerFire();
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.Z) ) {
-            this.Zduration=game.time.now+5000;
             this.playerExplosion();
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.X) ) {
@@ -285,9 +282,6 @@ var level1State = {
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.L) ) {
             this.cheetingLose();
-        }
-        if(game.time.now==this.Zduration){
-            this.playerExplosion();
         }
     },
     cheetingWin:function(){

@@ -1,5 +1,5 @@
 
-var playState = { 
+var level2State = { 
     preload: function() {
         /// Loat game image
         game.load.image('background', 'assets/background.png');
