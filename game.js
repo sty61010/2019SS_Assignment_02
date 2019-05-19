@@ -4,6 +4,7 @@ var scoreText;
 var lives;
 var stateText;
 var outcome=0;
+var p2=1;
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas');
 // game.global = { score: 0 };
 // Add all the states

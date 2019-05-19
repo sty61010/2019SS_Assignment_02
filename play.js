@@ -13,8 +13,16 @@ var playState = {
         // game.load.spritesheet('player', 'assets/ironman.png', 83, 165);
         game.load.spritesheet('player', 'assets/ace.png', 160, 175);
 
-        // game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
-        game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
+        // game.load.spritesheet('player2', 'assets/pho_fly.png', 315, 285);
+        // game.load.spritesheet('player2', 'assets/pho_fly2.png', 240, 235);
+        game.load.spritesheet('player2', 'assets/pho_atk.png', 196, 240);
+        game.load.spritesheet('bullet2', 'assets/blue_flame.png', 60, 60);
+
+
+        game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
+        // game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
+
+
         game.load.spritesheet('coin', 'assets/coin.png', 32, 35);
         // game.load.spritesheet('boss', 'assets/boss.png', 65, 78);//////
         game.load.spritesheet('boss', 'assets/boss.png', 65, 78);
@@ -39,10 +47,15 @@ var playState = {
         this.bg = game.add.tileSprite(0, 0, 800, 600, 'background');
         ///player
         this.createPlayer();
+        ///player2
+        if(p2==1)
+            this.createPlayer2();
         ///enemy
         this.createEnemy();
         ///bullet
         this.createBullet();
+        ///bullet2
+        this.createBullet2();
         ///obstacle
         this.createObstacle();
         ///boss
@@ -112,12 +125,29 @@ var playState = {
         this.player = game.add.sprite(400, 550, 'player');
         this.player.anchor.setTo(0.5);
         this.player.animations.add('player_fly', [ 1, 2, 3], 5, true);
+        // this.player.animations.add('player_fly', [ 0, 1, 2], 5, true);
+        // this.player.animations.add('player_fly', [2,3,4], 5, true);
+
         this.player.play('player_fly');
         game.physics.arcade.enable(this.player);
         this.player.speed = 300;
         this.player.body.collideWorldBounds = true;
         this.player.body.setSize(20, 20, 0, -5);
         this.player.scale.setTo(0.7,0.7);
+    },
+    createPlayer2:function(){
+        this.player2 = game.add.sprite(400, 550, 'player2');
+        this.player2.anchor.setTo(0.5);
+        // this.player2.animations.add('player_fly', [ 1, 2, 3], 5, true);
+        // this.player.animations.add('player_fly', [ 0, 1, 2], 5, true);
+        this.player2.animations.add('player2_fly', [2,3,4], 5, true);
+
+        this.player2.play('player2_fly');
+        game.physics.arcade.enable(this.player2);
+        this.player2.speed = 400;
+        this.player2.body.collideWorldBounds = true;
+        this.player2.body.setSize(20, 20, 0, -5);
+        this.player2.scale.setTo(0.7,0.7);
     },
     createObstacle:function(){
         this.obstaclePool = game.add.group();
@@ -161,6 +191,20 @@ var playState = {
         this.nextShotAt = 0;
         this.shotDelay = 100;   
     },
+    createBullet2:function(){
+        this.bulletPool2 = game.add.group();
+        this.bulletPool2.enableBody = true;
+        this.bulletPool2.createMultiple(150, 'bullet2');
+        this.bulletPool2.setAll('anchor.x', 0.5);
+        this.bulletPool2.setAll('anchor.y', 1);
+        this.bulletPool2.setAll('outOfBoundsKill', true);
+        this.bulletPool2.setAll('checkWorldBounds', true);
+        this.bulletPool2.forEach(function(bullet) {
+            bullet.animations.add('bullet2');
+        });
+
+    },
+
     createCoin:function(){
         this.coinPool = game.add.group();
         this.coinPool.enableBody = true;
@@ -175,6 +219,7 @@ var playState = {
         this.nextcoinAt = 0;
         this.coinDelay = 5000;
     },
+
     ///update
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     update: function() {
@@ -188,12 +233,17 @@ var playState = {
         this.GenerateCoin();
         ///player
         this.MovePlayer();
+        ///player2
+        if(p2==1)
+            this.MovePlayer2();
         ///collide
         game.physics.arcade.overlap(this.player, this.enemyPool, this.playerHit, null, this);
         game.physics.arcade.overlap(this.bulletPool, this.enemyPool, this.enemyHit, null, this);
         game.physics.arcade.overlap(this.enemyPool, this.obstaclePool, this.obstacleHit, null, this);
         game.physics.arcade.collide(this.player, this.obstaclePool, this.playerMagnet, null, this);
         game.physics.arcade.collide(this.player, this.coinPool, this.coinHit, null, this);
+        game.physics.arcade.overlap(this.bulletPool2, this.enemyPool, this.enemyHit, null, this);
+
         // game.physics.arcade.overlap(this.enemy, this.emitter, null, null,this);
     }, 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,6 +297,25 @@ var playState = {
             coin.play('coin_fly');
         }
     },
+    MovePlayer2: function() {
+        this.player2.body.velocity.x = 0;
+        this.player2.body.velocity.y = 0;
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A) ){
+            this.player2.body.velocity.x = -this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+            this.player2.body.velocity.x = this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+            this.player2.body.velocity.y = -this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+            this.player2.body.velocity.y = this.player2.speed;
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.Q) ) {
+            this.player2Fire();
+        }
+    },
     MovePlayer: function() {
         this.player.body.velocity.x = 0;
         this.player.body.velocity.y = 0;
@@ -277,7 +346,7 @@ var playState = {
         if (game.input.keyboard.isDown(Phaser.Keyboard.C) ) {
 
         }
-        if (game.input.keyboard.isDown(Phaser.Keyboard.W) ) {
+        if (game.input.keyboard.isDown(Phaser.Keyboard.K) ) {
             this.cheetingWin();
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.L) ) {
@@ -404,6 +473,21 @@ var playState = {
         bullet.reset(this.player.x, this.player.y-20);
         bullet.body.velocity.x = 500;
         bullet.play('bullet',true,true);
+    },
+    player2Fire: function() { 
+        //sound
+        this.player_fireSound.play();
+
+        if (!this.player2.alive || this.nextShotAt>game.time.now)
+            return;
+
+        this.nextShotAt = game.time.now + this.shotDelay;
+        var bullet2 = this.bulletPool2.getFirstExists(false);
+        bullet2.angle=90;
+        bullet2.scale.setTo(2,2);
+        bullet2.reset(this.player2.x, this.player2.y-20);
+        bullet2.body.velocity.x = 500;
+        bullet2.play('bullet2',true,true);
     },
 
 };

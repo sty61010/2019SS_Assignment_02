@@ -13,11 +13,18 @@ var level2State = {
         // game.load.spritesheet('player', 'assets/ironman.png', 83, 165);
         game.load.spritesheet('player', 'assets/ace.png', 160, 175);
 
+        // game.load.spritesheet('player2', 'assets/pho_fly.png', 315, 285);
+        // game.load.spritesheet('player2', 'assets/pho_fly2.png', 240, 235);
+        game.load.spritesheet('player2', 'assets/pho_atk.png', 196, 240);
+        game.load.spritesheet('bullet2', 'assets/blue_flame.png', 60, 60);
+
+        game.load.spritesheet('bullet', 'assets/red_flame.png', 131, 169);
         // game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
-        game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
+        // game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
         game.load.spritesheet('coin', 'assets/coin.png', 32, 35);
         // game.load.spritesheet('boss', 'assets/boss.png', 65, 78);//////
         game.load.spritesheet('boss', 'assets/boss.png', 65, 78);
+        game.load.spritesheet('ice','assets/ice.png', 340, 295);
 
         ///sound
         game.load.audio('player_fire', 'assets/flame.wav');
@@ -39,10 +46,15 @@ var level2State = {
         this.bg = game.add.tileSprite(0, 0, 800, 600, 'background');
         ///player
         this.createPlayer();
+        ///player2
+        if(p2==1)
+            this.createPlayer2();
         ///enemy
         this.createEnemy();
         ///bullet
         this.createBullet();
+        ///bullet2
+        this.createBullet2();
         ///obstacle
         this.createObstacle();
         ///boss
@@ -71,6 +83,9 @@ var level2State = {
         stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Georgia', fill: '#000' });
         stateText.anchor.setTo(0.5, 0.5);
         stateText.visible = false;
+        ///level
+        game.add.text(game.world.width/2-75, 10, 'Level 2 ', { font: '50px Georgia', fill: '#000' });
+
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     createBoss:function(){
@@ -118,6 +133,52 @@ var level2State = {
         this.player.body.collideWorldBounds = true;
         this.player.body.setSize(20, 20, 0, -5);
         this.player.scale.setTo(0.7,0.7);
+    },
+    createPlayer2:function(){
+        this.player2 = game.add.sprite(400, 550, 'player2');
+        this.player2.anchor.setTo(0.5);
+        // this.player2.animations.add('player_fly', [ 1, 2, 3], 5, true);
+        // this.player.animations.add('player_fly', [ 0, 1, 2], 5, true);
+        this.player2.animations.add('player2_fly', [2,3,4], 5, true);
+
+        this.player2.play('player2_fly');
+        game.physics.arcade.enable(this.player2);
+        this.player2.speed = 400;
+        this.player2.body.collideWorldBounds = true;
+        this.player2.body.setSize(20, 20, 0, -5);
+        this.player2.scale.setTo(0.7,0.7);
+    },
+    MovePlayer2: function() {
+        this.player2.body.velocity.x = 0;
+        this.player2.body.velocity.y = 0;
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A) ){
+            this.player2.body.velocity.x = -this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+            this.player2.body.velocity.x = this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+            this.player2.body.velocity.y = -this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+            this.player2.body.velocity.y = this.player2.speed;
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.Q) ) {
+            this.player2Fire();
+        }
+    },
+    createBullet2:function(){
+        this.bulletPool2 = game.add.group();
+        this.bulletPool2.enableBody = true;
+        this.bulletPool2.createMultiple(150, 'bullet2');
+        this.bulletPool2.setAll('anchor.x', 0.5);
+        this.bulletPool2.setAll('anchor.y', 1);
+        this.bulletPool2.setAll('outOfBoundsKill', true);
+        this.bulletPool2.setAll('checkWorldBounds', true);
+        this.bulletPool2.forEach(function(bullet) {
+            bullet.animations.add('bullet2');
+        });
+
     },
     createObstacle:function(){
         this.obstaclePool = game.add.group();
@@ -188,17 +249,45 @@ var level2State = {
         this.GenerateCoin();
         ///player
         this.MovePlayer();
+        ///player2
+        if(p2==1)
+            this.MovePlayer2();
         ///collide
         game.physics.arcade.overlap(this.player, this.enemyPool, this.playerHit, null, this);
         game.physics.arcade.overlap(this.bulletPool, this.enemyPool, this.enemyHit, null, this);
         game.physics.arcade.overlap(this.enemyPool, this.obstaclePool, this.obstacleHit, null, this);
         game.physics.arcade.collide(this.player, this.obstaclePool, this.playerMagnet, null, this);
         game.physics.arcade.collide(this.player, this.coinPool, this.coinHit, null, this);
+        game.physics.arcade.overlap(this.bulletPool2, this.enemyPool, this.enemyHit, null, this);
+
         // game.physics.arcade.overlap(this.enemy, this.emitter, null, null,this);
     }, 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    playerMagnet:function(){
+    playerMagnet:function(player, enemy){
+        ///sound
         this.magnetSound.play();
+        enemy.kill();
+        ///ice
+        var ice = game.add.sprite(player.x, player.y, 'ice');
+        ice.anchor.setTo(0.5);
+        ice.animations.add('boom');
+        ice.play('boom', 15, false, true);
+
+        ///live
+        live = lives.getFirstAlive();
+        if (live)
+        {
+            live.kill();
+        }
+        if (lives.countLiving() < 1)
+        {
+            player.kill();
+            stateText.text=" GAME OVER \n Click to restart";
+            stateText.visible = true;
+
+            outcome=0;
+            game.state.start('end');
+        }
     },
     playerExplosion: function() {
         ///sound
@@ -231,7 +320,7 @@ var level2State = {
         if (this.nextEnemyAt<game.time.now && this.enemyPool.countDead()>0) {
             this.nextEnemyAt = game.time.now + this.enemyDelay;
             var enemy = this.enemyPool.getFirstExists(false);
-            enemy.reset(780,game.rnd.integerInRange(20, 580));
+            enemy.reset(game.rnd.integerInRange(20, 780),game.rnd.integerInRange(20, 580));
             enemy.body.velocity.y = game.rnd.integerInRange(-30, 60);
             enemy.body.velocity.x = -game.rnd.integerInRange(30, 60);
             enemy.play('enemy_fly');
@@ -277,7 +366,7 @@ var level2State = {
         if (game.input.keyboard.isDown(Phaser.Keyboard.C) ) {
 
         }
-        if (game.input.keyboard.isDown(Phaser.Keyboard.W) ) {
+        if (game.input.keyboard.isDown(Phaser.Keyboard.K) ) {
             this.cheetingWin();
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.L) ) {
@@ -298,15 +387,15 @@ var level2State = {
         ///Increase the score
         score += 20;
         scoreText.text = scoreString + score;
-        if (score>=1000)
+        if (score>=2000)
         {
 
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
             stateText.visible = true;
 
-            outcome=1;
-            game.state.start('end');
+            outcome=0;
+            game.state.start('level3');
         }
         ///kill
         coin.animations.add('coin_hit',[6, 7, 8, 9, 10, 11], 20, true);
@@ -319,14 +408,14 @@ var level2State = {
         ///Increase the score
         score += 100;
         scoreText.text = scoreString + score;
-        if (score>=1000)
+        if (score>2000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
             stateText.visible = true;
 
-            outcome=1;
-            game.state.start('end');
+            outcome=0;
+            game.state.start('level3');
         }
         ///
         enemy.animations.add('enemy_hit',[5, 6], 20, true);
@@ -344,14 +433,14 @@ var level2State = {
         ///Increase the score
         score += 10;
         scoreText.text = scoreString + score;
-        if (score>=1000)
+        if (score>=2000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
             stateText.visible = true;
 
-            outcome=1;
-            game.state.start('end');
+            outcome=0;
+            game.state.start('level3');
         }
         ///kill
         enemy.animations.add('enemy_hit',[5, 6], 20, true);
@@ -363,6 +452,9 @@ var level2State = {
         explosion.animations.add('boom');
         explosion.play('boom', 15, false, true);
         enemy.kill();
+    },
+    playerTouchObstacle :function(player,obstacle){
+
     },
     playerHit: function(player, enemy) { 
         ///sound
@@ -400,12 +492,27 @@ var level2State = {
             return;
         this.nextShotAt = game.time.now + this.shotDelay;
         var bullet = this.bulletPool.getFirstExists(false);
-        bullet.angle=90;
+        bullet.angle=-90;
+        bullet.scale.setTo(0.8,0.8);
         bullet.reset(this.player.x, this.player.y-20);
         bullet.body.velocity.x = 500;
         bullet.play('bullet',true,true);
     },
+    player2Fire: function() { 
+        //sound
+        this.player_fireSound.play();
 
+        if (!this.player2.alive || this.nextShotAt>game.time.now)
+            return;
+
+        this.nextShotAt = game.time.now + this.shotDelay;
+        var bullet2 = this.bulletPool2.getFirstExists(false);
+        bullet2.angle=90;
+        bullet2.scale.setTo(2,2);
+        bullet2.reset(this.player2.x, this.player2.y-20);
+        bullet2.body.velocity.x = 500;
+        bullet2.play('bullet2',true,true);
+    },
 };
 
 

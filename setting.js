@@ -37,7 +37,7 @@ var settingState = {
     playClick:function(){
         score=0;
         outcome=0;
-        game.state.start('play');
+        game.state.start('level1');
     },
     lockClick:function(){
         game.state.start('menu');

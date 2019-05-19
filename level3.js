@@ -13,8 +13,14 @@ var level3State = {
         // game.load.spritesheet('player', 'assets/ironman.png', 83, 165);
         game.load.spritesheet('player', 'assets/ace.png', 160, 175);
 
+        // game.load.spritesheet('player2', 'assets/pho_fly.png', 315, 285);
+        // game.load.spritesheet('player2', 'assets/pho_fly2.png', 240, 235);
+        game.load.spritesheet('player2', 'assets/pho_atk.png', 196, 240);
+        game.load.spritesheet('bullet2', 'assets/blue_flame.png', 60, 60);
+
+        game.load.spritesheet('bullet', 'assets/red_flame.png', 131, 169);
         // game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
-        game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
+        // game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
         game.load.spritesheet('coin', 'assets/coin.png', 32, 35);
         // game.load.spritesheet('boss', 'assets/boss.png', 65, 78);//////
         game.load.spritesheet('boss', 'assets/boss.png', 65, 78);
@@ -39,10 +45,15 @@ var level3State = {
         this.bg = game.add.tileSprite(0, 0, 800, 600, 'background');
         ///player
         this.createPlayer();
+        ///player2
+        if(p2==1)
+            this.createPlayer2();
         ///enemy
         this.createEnemy();
         ///bullet
         this.createBullet();
+        ///bullet2
+        this.createBullet2();
         ///obstacle
         this.createObstacle();
         ///boss
@@ -71,6 +82,9 @@ var level3State = {
         stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Georgia', fill: '#000' });
         stateText.anchor.setTo(0.5, 0.5);
         stateText.visible = false;
+        ///level
+        game.add.text(game.world.width/2-75, 10, 'Level 3 ', { font: '50px Georgia', fill: '#000' });
+
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     createBoss:function(){
@@ -108,6 +122,52 @@ var level3State = {
         // this.emitter.scale.setTo(0.001,0.001);
         this.emitter.gravity = 0;
     },
+    createPlayer2:function(){
+        this.player2 = game.add.sprite(400, 550, 'player2');
+        this.player2.anchor.setTo(0.5);
+        // this.player2.animations.add('player_fly', [ 1, 2, 3], 5, true);
+        // this.player.animations.add('player_fly', [ 0, 1, 2], 5, true);
+        this.player2.animations.add('player2_fly', [2,3,4], 5, true);
+
+        this.player2.play('player2_fly');
+        game.physics.arcade.enable(this.player2);
+        this.player2.speed = 400;
+        this.player2.body.collideWorldBounds = true;
+        this.player2.body.setSize(20, 20, 0, -5);
+        this.player2.scale.setTo(0.7,0.7);
+    },
+    createBullet2:function(){
+        this.bulletPool2 = game.add.group();
+        this.bulletPool2.enableBody = true;
+        this.bulletPool2.createMultiple(150, 'bullet2');
+        this.bulletPool2.setAll('anchor.x', 0.5);
+        this.bulletPool2.setAll('anchor.y', 1);
+        this.bulletPool2.setAll('outOfBoundsKill', true);
+        this.bulletPool2.setAll('checkWorldBounds', true);
+        this.bulletPool2.forEach(function(bullet) {
+            bullet.animations.add('bullet2');
+        });
+
+    },
+    MovePlayer2: function() {
+        this.player2.body.velocity.x = 0;
+        this.player2.body.velocity.y = 0;
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A) ){
+            this.player2.body.velocity.x = -this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+            this.player2.body.velocity.x = this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+            this.player2.body.velocity.y = -this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+            this.player2.body.velocity.y = this.player2.speed;
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.Q) ) {
+            this.player2Fire();
+        }
+    },
     createPlayer:function(){
         this.player = game.add.sprite(400, 550, 'player');
         this.player.anchor.setTo(0.5);
@@ -131,7 +191,7 @@ var level3State = {
             obstacle.animations.add('obstacle_fly',[0, 1, 2, 3, 4], 10, true);
         });
         this.nextobstacleAt = 0;
-        this.obstacleDelay = 15000;
+        this.obstacleDelay = 1500;
     },
     createEnemy:function(){
         this.enemyPool = game.add.group();
@@ -145,7 +205,7 @@ var level3State = {
             enemy.animations.add('enemy_fly',[0, 1, 2, 3, 4], 15, true);
         });
         this.nextEnemyAt = 0;
-        this.enemyDelay = 500;
+        this.enemyDelay = 50;
     },
     createBullet:function(){
         this.bulletPool = game.add.group();
@@ -188,12 +248,17 @@ var level3State = {
         this.GenerateCoin();
         ///player
         this.MovePlayer();
+        ///player2
+        if(p2==1)
+            this.MovePlayer2();
         ///collide
         game.physics.arcade.overlap(this.player, this.enemyPool, this.playerHit, null, this);
         game.physics.arcade.overlap(this.bulletPool, this.enemyPool, this.enemyHit, null, this);
         game.physics.arcade.overlap(this.enemyPool, this.obstaclePool, this.obstacleHit, null, this);
         game.physics.arcade.collide(this.player, this.obstaclePool, this.playerMagnet, null, this);
         game.physics.arcade.collide(this.player, this.coinPool, this.coinHit, null, this);
+        game.physics.arcade.overlap(this.bulletPool2, this.enemyPool, this.enemyHit, null, this);
+
         // game.physics.arcade.overlap(this.enemy, this.emitter, null, null,this);
     }, 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,9 +296,9 @@ var level3State = {
         if (this.nextEnemyAt<game.time.now && this.enemyPool.countDead()>0) {
             this.nextEnemyAt = game.time.now + this.enemyDelay;
             var enemy = this.enemyPool.getFirstExists(false);
-            enemy.reset(780,game.rnd.integerInRange(20, 580));
-            enemy.body.velocity.y = game.rnd.integerInRange(-30, 60);
-            enemy.body.velocity.x = -game.rnd.integerInRange(30, 60);
+            enemy.reset(game.rnd.integerInRange(380, 780),game.rnd.integerInRange(20, 580));
+            enemy.body.velocity.y = game.rnd.integerInRange(-30, 160);
+            enemy.body.velocity.x = -game.rnd.integerInRange(330, 160);
             enemy.play('enemy_fly');
         }
     },
@@ -277,7 +342,7 @@ var level3State = {
         if (game.input.keyboard.isDown(Phaser.Keyboard.C) ) {
 
         }
-        if (game.input.keyboard.isDown(Phaser.Keyboard.W) ) {
+        if (game.input.keyboard.isDown(Phaser.Keyboard.K) ) {
             this.cheetingWin();
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.L) ) {
@@ -298,7 +363,7 @@ var level3State = {
         ///Increase the score
         score += 20;
         scoreText.text = scoreString + score;
-        if (score>=1000)
+        if (score>=5000)
         {
 
             scoreText.text = scoreString + score;
@@ -319,7 +384,7 @@ var level3State = {
         ///Increase the score
         score += 100;
         scoreText.text = scoreString + score;
-        if (score>=1000)
+        if (score>=5000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
@@ -344,7 +409,7 @@ var level3State = {
         ///Increase the score
         score += 10;
         scoreText.text = scoreString + score;
-        if (score>=1000)
+        if (score>=5000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
@@ -378,7 +443,7 @@ var level3State = {
         live = lives.getFirstAlive();
         if (live)
         {
-            live.kill();
+            // live.kill();
         }
         if (lives.countLiving() < 1)
         {
@@ -400,12 +465,27 @@ var level3State = {
             return;
         this.nextShotAt = game.time.now + this.shotDelay;
         var bullet = this.bulletPool.getFirstExists(false);
-        bullet.angle=90;
+        bullet.angle=-90;
+        bullet.scale.setTo(0.8,0.8);
         bullet.reset(this.player.x, this.player.y-20);
         bullet.body.velocity.x = 500;
         bullet.play('bullet',true,true);
     },
+    player2Fire: function() { 
+        //sound
+        this.player_fireSound.play();
 
+        if (!this.player2.alive || this.nextShotAt>game.time.now)
+            return;
+
+        this.nextShotAt = game.time.now + this.shotDelay;
+        var bullet2 = this.bulletPool2.getFirstExists(false);
+        bullet2.angle=90;
+        bullet2.scale.setTo(2,2);
+        bullet2.reset(this.player2.x, this.player2.y-20);
+        bullet2.body.velocity.x = 500;
+        bullet2.play('bullet2',true,true);
+    },
 };
 
 
