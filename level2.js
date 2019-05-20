@@ -208,7 +208,7 @@ var level2State = {
             obstacle.animations.add('obstacle_fly',[0, 1, 2, 3, 4], 10, true);
         });
         this.nextobstacleAt = 0;
-        this.obstacleDelay = 15000;
+        this.obstacleDelay = 5000;
     },
     createEnemy:function(){
         this.enemyPool = game.add.group();
@@ -505,7 +505,7 @@ var level2State = {
 
 
             outcome=0;
-            game.state.start('level2');
+            game.state.start('level3');
         }
         ///kill
         enemy.animations.add('enemy_hit',[5, 6], 20, true);

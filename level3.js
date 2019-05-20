@@ -18,6 +18,9 @@ var level3State = {
         game.load.spritesheet('player2', 'assets/pho_atk.png', 196, 240);
         game.load.spritesheet('bullet2', 'assets/blue_flame.png', 60, 60);
 
+        game.load.spritesheet('helper', 'assets/helper.png', 185, 210);
+        game.load.spritesheet('h_bullet', 'assets/flame.png', 103, 103);
+
         // game.load.spritesheet('bullet', 'assets/red_flame.png', 131, 169);
         // game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
         // game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
@@ -31,7 +34,9 @@ var level3State = {
         game.load.spritesheet('coin', 'assets/coin.png', 32, 35);
         // game.load.spritesheet('boss', 'assets/boss.png', 65, 78);//////
         game.load.spritesheet('boss', 'assets/boss.png', 65, 78);
+        game.load.spritesheet('b_bullet', 'assets/water.png', 94, 85);
 
+        game.load.spritesheet('ice','assets/ice.png', 340, 295);
         ///sound
         game.load.audio('player_fire', 'assets/flame.wav');
         game.load.audio('enemy_fire', 'assets/enemy-fire.wav');
@@ -58,6 +63,12 @@ var level3State = {
         ///player2
         if(p2==1)
             this.createPlayer2();
+        ///helper
+        if(lh==1)
+            this.createHelper();
+        ///h_bullet
+        if(lh==1)
+            this.createHBullet();
         ///enemy
         this.createEnemy();
         ///bullet
@@ -70,6 +81,9 @@ var level3State = {
         this.createObstacle();
         ///boss
         this.createBoss();
+        ///b_bullet
+        this.createBBullet();
+ 
         ///coin
         this.createCoin();
         ///sound
@@ -96,7 +110,16 @@ var level3State = {
         stateText.visible = false;
         ///level
         game.add.text(game.world.width/2-75, 10, 'Level 3 ', { font: '50px Georgia', fill: '#000' });
+        ///bosslives
+        // bosslives=game.add.group();
+        bossString='Boss:'
+        // for (var i = 0; i < 99; i++) 
+        // {
+        //     bosslives.create(99);
 
+        // }
+        bosstext = game.add.text(game.world.width/2-75, 550, bossString + bosslives, { font: '34px Georgia', fill: '#000' });
+ 
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     createBoss:function(){
@@ -107,8 +130,11 @@ var level3State = {
         game.physics.arcade.enable(this.boss);
         this.boss.body.collideWorldBounds = true;
         this.boss.enableBody = true;
-        this.boss.scale.setTo(4, 4);
+        this.boss.scale.setTo(2, 2);
         this.boss.scale.x*=-1;
+
+        this.boss.body.velocity.y = 50;
+        this.boss.body.bounce.setTo(1.1,1.1);
     },
     createSound:function(){
         this.player_fireSound=game.add.audio('player_fire');
@@ -153,6 +179,46 @@ var level3State = {
         this.player2.body.setSize(20, 20, 0, -5);
         this.player2.scale.setTo(0.7,0.7);
     },
+    createHelper:function(){
+        this.helper = game.add.sprite(300, 200, 'helper');
+        this.helper.anchor.setTo(0.5);
+        this.helper.animations.add('helper_fly', [0,1,2,3], 5, true);
+
+        this.helper.play('helper_fly');
+        game.physics.arcade.enable(this.helper);
+        this.helper.speed = 200;
+        this.helper.body.collideWorldBounds = true;
+        this.helper.body.setSize(20, 20, 0, -5);
+        this.helper.scale.setTo(0.5,0.5);
+    },
+    createHBullet:function(){
+        this.h_bulletPool = game.add.group();
+        this.h_bulletPool.enableBody = true;
+        this.h_bulletPool.createMultiple(100, 'h_bullet');
+        this.h_bulletPool.setAll('anchor.x', 0.5);
+        this.h_bulletPool.setAll('anchor.y', 0.5);
+        this.h_bulletPool.setAll('outOfBoundsKill', true);
+        this.h_bulletPool.setAll('checkWorldBounds', true);
+        this.h_bulletPool.forEach(function(h_bullet) {
+            h_bullet.animations.add('h_bullet');
+        });
+        this.nexth_bulletAt = 0;
+        this.h_bulletDelay = 60;
+    },
+    createBBullet:function(){
+        this.b_bulletPool = game.add.group();
+        this.b_bulletPool.enableBody = true;
+        this.b_bulletPool.createMultiple(100, 'b_bullet');
+        this.b_bulletPool.setAll('anchor.x', 0.5);
+        this.b_bulletPool.setAll('anchor.y', 0.5);
+        this.b_bulletPool.setAll('outOfBoundsKill', true);
+        this.b_bulletPool.setAll('checkWorldBounds', true);
+        this.b_bulletPool.forEach(function(b_bullet) {
+            b_bullet.animations.add('b_bullet');
+        });
+        this.nextb_bulletAt = 0;
+        this.b_bulletDelay = 500;
+    },
     createBullet2:function(){
         this.bulletPool2 = game.add.group();
         this.bulletPool2.enableBody = true;
@@ -165,25 +231,6 @@ var level3State = {
             bullet.animations.add('bullet2');
         });
 
-    },
-    MovePlayer2: function() {
-        this.player2.body.velocity.x = 0;
-        this.player2.body.velocity.y = 0;
-        if (game.input.keyboard.isDown(Phaser.Keyboard.A) ){
-            this.player2.body.velocity.x = -this.player2.speed;
-        }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
-            this.player2.body.velocity.x = this.player2.speed;
-        }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
-            this.player2.body.velocity.y = -this.player2.speed;
-        }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
-            this.player2.body.velocity.y = this.player2.speed;
-        }
-        if (game.input.keyboard.isDown(Phaser.Keyboard.Q) ) {
-            this.player2Fire();
-        }
     },
     createPlayer:function(){
         this.player = game.add.sprite(400, 300, 'player');
@@ -284,7 +331,7 @@ var level3State = {
         ///enemy
         // this.GenerateEnemy();
         ///obstacle
-        // this.GenerateObstacle();
+        this.GenerateObstacle();
         ///coin
         this.GenerateCoin();
         ///player
@@ -292,6 +339,17 @@ var level3State = {
         ///player2
         if(p2==1)
             this.MovePlayer2();
+        ///helper
+        if(lh==1)
+            this.MoveHelper();
+        ///h_bullet
+        if(lh==1)
+            this.GenerateHBullet();
+        ///boss
+        this.MoveBoss();
+        this.GenerateBBullet();
+
+
         ///collide
         game.physics.arcade.overlap(this.player, this.enemyPool, this.playerHit, null, this);
         game.physics.arcade.overlap(this.bulletPool, this.enemyPool, this.enemyHit, null, this);
@@ -301,6 +359,14 @@ var level3State = {
         game.physics.arcade.overlap(this.bulletPool2, this.enemyPool, this.enemyHit, null, this);
         game.physics.arcade.overlap(this.bulletPool12, this.enemyPool, this.enemyHit2, null, this);
         game.physics.arcade.overlap(this.bulletPool13, this.enemyPool, this.enemyHit2, null, this);
+        game.physics.arcade.overlap(this.h_bulletPool, this.enemyPool, this.enemyHit, null, this);
+        game.physics.arcade.overlap(this.h_bulletPool, this.boss, this.bossHit, null, this);
+        game.physics.arcade.overlap(this.bulletPool, this.boss, this.bossHit, null, this);
+        game.physics.arcade.overlap(this.bulletPool12, this.boss, this.bossHit, null, this);
+        game.physics.arcade.overlap(this.bulletPool13, this.boss, this.bossHit, null, this);
+        game.physics.arcade.overlap(this.player, this.b_bulletPool, this.playerHit, null, this);
+
+
         // game.physics.arcade.overlap(this.enemy, this.emitter, null, null,this);
     }, 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -345,6 +411,26 @@ var level3State = {
             enemy.play('enemy_fly');
         }
     },
+    GenerateHBullet: function(){
+        if (this.nexth_bulletAt<game.time.now ) {
+            this.nexth_bulletAt = game.time.now + this.h_bulletDelay;
+            var h_bullet = this.h_bulletPool.getFirstExists(false);
+            h_bullet.reset(this.helper.x+40,this.helper.y-40);
+            h_bullet.angle=90;
+            h_bullet.body.velocity.x = 500;
+            h_bullet.play('h_bullet',true,true);
+        }
+    },
+    GenerateBBullet: function(){
+        if (this.nextb_bulletAt<game.time.now ) {
+            this.nextb_bulletAt = game.time.now + this.b_bulletDelay;
+            var b_bullet = this.b_bulletPool.getFirstExists(false);
+            b_bullet.reset(this.boss.x-40,this.boss.y);
+            // b_bullet.angle=90;
+            b_bullet.body.velocity.x = -500;
+            b_bullet.play('b_bullet', true,true);
+        }
+    },
     GenerateCoin: function(){
         if (this.nextcoinAt<game.time.now && this.coinPool.countDead()>0) {
             this.nextcoinAt = game.time.now + this.coinDelay;
@@ -354,6 +440,46 @@ var level3State = {
             coin.body.velocity.x = game.rnd.integerInRange(30, 90);
             coin.play('coin_fly');
         }
+    },
+    MovePlayer2: function() {
+        this.player2.body.velocity.x = 0;
+        this.player2.body.velocity.y = 0;
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A) ){
+            this.player2.body.velocity.x = -this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+            this.player2.body.velocity.x = this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+            this.player2.body.velocity.y = -this.player2.speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+            this.player2.body.velocity.y = this.player2.speed;
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.Q) ) {
+            this.player2Fire();
+        }
+    },
+    MoveHelper: function() {
+        this.helper.body.velocity.x = game.rnd.integerInRange(-600,600);
+        this.helper.body.velocity.y = +game.rnd.integerInRange(-600,600);
+        if (this.cursors.left.isDown) {
+            this.helper.body.velocity.x = -this.helper.speed+game.rnd.integerInRange(-150,150);
+        }
+        else if (this.cursors.right.isDown) {
+            this.helper.body.velocity.x = this.helper.speed+game.rnd.integerInRange(-150,150);
+        }
+        else if (this.cursors.up.isDown) {
+            this.helper.body.velocity.y = -this.helper.speed+game.rnd.integerInRange(-150,150);
+        }
+        else if (this.cursors.down.isDown) {
+            this.helper.body.velocity.y = this.helper.speed+game.rnd.integerInRange(-150,150);
+        }
+    },
+    MoveBoss: function() {
+
+        // if(this.boss.y<390)this.boss.body.velocity.y = game.rnd.integerInRange(150,500);
+        // else this.boss.body.velocity.y =-game.rnd.integerInRange(150,500); 
     },
     MovePlayer: function() {
         this.player.body.velocity.x = 0;
@@ -458,7 +584,7 @@ var level3State = {
             stateText.text = " You Won, \n Click to restart";
             stateText.visible = true;
 
-            outcome=0;
+            outcome=1;
             game.state.start('level2');
         }
         ///kill
@@ -498,6 +624,51 @@ var level3State = {
         explosion.play('boom', 15, false, true);
         enemy.kill();
     },
+    bossHit: function(bullet, boss) {
+        // bullet.kill();
+
+        ///sound
+        this.enemy_explosionSound.play();
+        ///Increase the score
+        score += 1;
+        scoreText.text = scoreString + score;
+        if (score>=5000)
+        {
+            scoreText.text = scoreString + score;
+            stateText.text = " You Won, \n Click to restart";
+            stateText.visible = true;
+
+            outcome=1;
+            game.state.start('end');
+        }
+        ///kill
+        ///live
+        // live = bosslives.getFirstAlive();
+        // if (live)
+        // {
+        //     live.kill();
+        // }
+        // if (bosslives.countLiving() < 1)
+        // {
+        //     boss.kill();
+
+        //     outcome=1;
+        //     game.state.start('end');
+        // }
+        bosslives-=1;
+        bosstext.text=bossString+bosslives;
+        // if(bosslives==0){
+        //     // boss.kill();
+        // }
+
+        ///ice
+        var ice = game.add.sprite(this.boss.x, this.boss.y, 'ice');
+        ice.anchor.setTo(0.5);
+        ice.animations.add('boom');
+        ice.play('boom', 15, false, true);
+
+
+    },
     playerHit: function(player, enemy) { 
         ///sound
         this.player_explosionSound.play();
@@ -512,7 +683,7 @@ var level3State = {
         live = lives.getFirstAlive();
         if (live)
         {
-            // live.kill();
+            live.kill();
         }
         if (lives.countLiving() < 1)
         {

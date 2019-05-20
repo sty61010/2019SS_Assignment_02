@@ -242,7 +242,7 @@ var level1State = {
             enemy.animations.add('enemy_fly',[0, 1, 2, 3, 4], 15, true);
         });
         this.nextEnemyAt = 0;
-        this.enemyDelay = 1000;
+        this.enemyDelay = 500;
     },
     createBullet:function(){
         this.bulletPool = game.add.group();

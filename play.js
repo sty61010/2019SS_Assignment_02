@@ -25,8 +25,8 @@ var playState = {
 
         game.load.spritesheet('coin', 'assets/coin.png', 32, 35);
         // game.load.spritesheet('boss', 'assets/boss.png', 65, 78);//////
-        game.load.spritesheet('boss', 'assets/boss.png', 65, 78);
-
+        // game.load.spritesheet('boss', 'assets/boss.png', 65, 78);
+        game.load.spritesheet('boss', 'assets/boss_atk.png', 60, 70);
         ///sound
         game.load.audio('player_fire', 'assets/flame.wav');
         game.load.audio('enemy_fire', 'assets/enemy-fire.wav');
@@ -59,7 +59,7 @@ var playState = {
         ///obstacle
         this.createObstacle();
         ///boss
-        // this.createBoss();
+        this.createBoss();
         ///coin
         this.createCoin();
         ///sound
@@ -76,7 +76,7 @@ var playState = {
         game.add.text(game.world.width - 100, 10, 'Lives : ', { font: '34px Georgia', fill: '#000' });
         for (var i = 0; i < 3; i++) 
         {
-            var live = lives.create(game.world.width - 100 + (30 * i), 60, 'live');
+            var live = lives.create(game.world.width - 100 + (30 * i), 40, 'live');
             live.scale.setTo(0.008, 0.008);
             live.alpha = 0.8;
         }
@@ -89,12 +89,15 @@ var playState = {
     createBoss:function(){
         this.boss = game.add.sprite(400, 50, 'boss');
         this.boss.anchor.setTo(0.5);
-        this.boss.animations.add('boss_fly', [8, 9, 10, 11, 12, 13], 5, true);
+        // this.boss.animations.add('boss_fly', [8, 9, 10, 11, 12, 13], 5, true);
+        this.boss.animations.add('boss_fly', [0,1,2,3], 1, true);
+
         this.boss.play('boss_fly');
         game.physics.arcade.enable(this.boss);
         this.boss.body.collideWorldBounds = true;
         this.boss.enableBody = true;
         this.boss.scale.setTo(4, 4);
+        // this.boss.scale.x*=-1;
     },
     createSound:function(){
         this.player_fireSound=game.add.audio('player_fire');
