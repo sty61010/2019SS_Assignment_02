@@ -18,9 +18,16 @@ var level3State = {
         game.load.spritesheet('player2', 'assets/pho_atk.png', 196, 240);
         game.load.spritesheet('bullet2', 'assets/blue_flame.png', 60, 60);
 
-        game.load.spritesheet('bullet', 'assets/red_flame.png', 131, 169);
+        // game.load.spritesheet('bullet', 'assets/red_flame.png', 131, 169);
         // game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
         // game.load.spritesheet('bullet', 'assets/bomb1.png', 282, 234);
+        
+        // game.load.spritesheet('bullet', 'assets/flame.png', 103, 103);
+        game.load.spritesheet('bullet11', 'assets/bomb1.png', 282, 234);
+        game.load.spritesheet('bullet', 'assets/red_flame.png', 131, 169);
+        game.load.spritesheet('bullet12', 'assets/fire_dragon.gif', 1100, 550);
+        game.load.spritesheet('bullet13', 'assets/sun.png', 200, 200);
+
         game.load.spritesheet('coin', 'assets/coin.png', 32, 35);
         // game.load.spritesheet('boss', 'assets/boss.png', 65, 78);//////
         game.load.spritesheet('boss', 'assets/boss.png', 65, 78);
@@ -34,6 +41,9 @@ var level3State = {
         game.load.audio('coin', 'assets/coin.wav');
         game.load.audio('magnet', 'assets/magnet.wav');
         game.load.audio('roar', 'assets/ace-bomb.wav');
+        game.load.audio('fireking', 'assets/ace_fireking.wav');
+        game.load.audio('firering', 'assets/ace_firering.wav');
+        game.load.audio('firefist', 'assets/ace_firefist.wav')
         
     },
     ///create
@@ -52,12 +62,14 @@ var level3State = {
         this.createEnemy();
         ///bullet
         this.createBullet();
+        this.createBullet12();
+        this.createBullet13();
         ///bullet2
         this.createBullet2();
         ///obstacle
         this.createObstacle();
         ///boss
-        // this.createBoss();
+        this.createBoss();
         ///coin
         this.createCoin();
         ///sound
@@ -88,7 +100,7 @@ var level3State = {
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     createBoss:function(){
-        this.boss = game.add.sprite(400, 50, 'boss');
+        this.boss = game.add.sprite(780, 300, 'boss');
         this.boss.anchor.setTo(0.5);
         this.boss.animations.add('boss_fly', [8, 9, 10, 11, 12, 13], 5, true);
         this.boss.play('boss_fly');
@@ -96,6 +108,7 @@ var level3State = {
         this.boss.body.collideWorldBounds = true;
         this.boss.enableBody = true;
         this.boss.scale.setTo(4, 4);
+        this.boss.scale.x*=-1;
     },
     createSound:function(){
         this.player_fireSound=game.add.audio('player_fire');
@@ -106,6 +119,10 @@ var level3State = {
         this.coinSound=game.add.audio('coin');
         this.magnetSound=game.add.audio('magnet');
         this.roarSound=game.add.audio('roar');
+
+        this.firefistSound=game.add.audio('firefist');
+        this.firekingSound=game.add.audio('fireking');
+        this.fireringSound=game.add.audio('firering');
     },
     createParitcle:function(){
         this.particlePool=game.add.group();
@@ -123,7 +140,7 @@ var level3State = {
         this.emitter.gravity = 0;
     },
     createPlayer2:function(){
-        this.player2 = game.add.sprite(400, 550, 'player2');
+        this.player2 = game.add.sprite(400, 300, 'player2');
         this.player2.anchor.setTo(0.5);
         // this.player2.animations.add('player_fly', [ 1, 2, 3], 5, true);
         // this.player.animations.add('player_fly', [ 0, 1, 2], 5, true);
@@ -169,7 +186,7 @@ var level3State = {
         }
     },
     createPlayer:function(){
-        this.player = game.add.sprite(400, 550, 'player');
+        this.player = game.add.sprite(400, 300, 'player');
         this.player.anchor.setTo(0.5);
         this.player.animations.add('player_fly', [ 1, 2, 3], 5, true);
         this.player.play('player_fly');
@@ -221,6 +238,30 @@ var level3State = {
         this.nextShotAt = 0;
         this.shotDelay = 100;   
     },
+    createBullet12:function(){
+        this.bulletPool12 = game.add.group();
+        this.bulletPool12.enableBody = true;
+        this.bulletPool12.createMultiple(150, 'bullet12');
+        this.bulletPool12.setAll('anchor.x', 0.5);
+        this.bulletPool12.setAll('anchor.y', 1);
+        this.bulletPool12.setAll('outOfBoundsKill', true);
+        this.bulletPool12.setAll('checkWorldBounds', true);
+        this.bulletPool12.forEach(function(bullet) {
+            bullet.animations.add('bullet12');
+        });
+    },
+    createBullet13:function(){
+        this.bulletPool13 = game.add.group();
+        this.bulletPool13.enableBody = true;
+        this.bulletPool13.createMultiple(150, 'bullet13');
+        this.bulletPool13.setAll('anchor.x', 0.5);
+        this.bulletPool13.setAll('anchor.y', 1);
+        this.bulletPool13.setAll('outOfBoundsKill', true);
+        this.bulletPool13.setAll('checkWorldBounds', true);
+        this.bulletPool13.forEach(function(bullet) {
+            bullet.animations.add('bullet13');
+        });
+    },
     createCoin:function(){
         this.coinPool = game.add.group();
         this.coinPool.enableBody = true;
@@ -241,9 +282,9 @@ var level3State = {
         ///  Scroll the background
         this.bg.tilePosition.x -= 2;        
         ///enemy
-        this.GenerateEnemy();
+        // this.GenerateEnemy();
         ///obstacle
-        this.GenerateObstacle();
+        // this.GenerateObstacle();
         ///coin
         this.GenerateCoin();
         ///player
@@ -258,7 +299,8 @@ var level3State = {
         game.physics.arcade.collide(this.player, this.obstaclePool, this.playerMagnet, null, this);
         game.physics.arcade.collide(this.player, this.coinPool, this.coinHit, null, this);
         game.physics.arcade.overlap(this.bulletPool2, this.enemyPool, this.enemyHit, null, this);
-
+        game.physics.arcade.overlap(this.bulletPool12, this.enemyPool, this.enemyHit2, null, this);
+        game.physics.arcade.overlap(this.bulletPool13, this.enemyPool, this.enemyHit2, null, this);
         // game.physics.arcade.overlap(this.enemy, this.emitter, null, null,this);
     }, 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -267,7 +309,8 @@ var level3State = {
     },
     playerExplosion: function() {
         ///sound
-        this.roarSound.play();
+        // this.roarSound.play();
+        this.firefistSound.play();
         ///emitter
         this.emitter = game.add.emitter(0, 0, 150);
         this.emitter.makeParticles('pixel');
@@ -296,7 +339,7 @@ var level3State = {
         if (this.nextEnemyAt<game.time.now && this.enemyPool.countDead()>0) {
             this.nextEnemyAt = game.time.now + this.enemyDelay;
             var enemy = this.enemyPool.getFirstExists(false);
-            enemy.reset(game.rnd.integerInRange(380, 780),game.rnd.integerInRange(20, 580));
+            enemy.reset(game.rnd.integerInRange(600, 780),game.rnd.integerInRange(20, 580));
             enemy.body.velocity.y = game.rnd.integerInRange(-30, 160);
             enemy.body.velocity.x = -game.rnd.integerInRange(330, 160);
             enemy.play('enemy_fly');
@@ -337,10 +380,10 @@ var level3State = {
             this.playerExplosion();
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.X) ) {
-
+            this.playerFire12();
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.C) ) {
-
+            this.playerFire13();
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.K) ) {
             this.cheetingWin();
@@ -396,6 +439,32 @@ var level3State = {
         ///
         enemy.animations.add('enemy_hit',[5, 6], 20, true);
         enemy.play('enemy_hit');
+        ///explosion
+        var explosion = game.add.sprite(enemy.x, enemy.y, 'explosion');
+        explosion.anchor.setTo(0.5);
+        explosion.animations.add('boom');
+        explosion.play('boom', 15, false, true);
+        enemy.kill();
+    },
+    enemyHit2: function(bullet, enemy) {
+        ///sound
+        this.enemy_explosionSound.play();
+        ///Increase the score
+        score += 10;
+        scoreText.text = scoreString + score;
+        if (score>=5000)
+        {
+            scoreText.text = scoreString + score;
+            stateText.text = " You Won, \n Click to restart";
+            stateText.visible = true;
+
+            outcome=0;
+            game.state.start('level2');
+        }
+        ///kill
+        enemy.animations.add('enemy_hit',[5, 6], 20, true);
+        enemy.play('enemy_hit');
+        // bullet.kill();
         ///explosion
         var explosion = game.add.sprite(enemy.x, enemy.y, 'explosion');
         explosion.anchor.setTo(0.5);
@@ -471,6 +540,68 @@ var level3State = {
         bullet.body.velocity.x = 500;
         bullet.play('bullet',true,true);
     },
+    playerFire12: function() { 
+        //sound
+        // this.roarSound.play();
+        this.fireringSound.play();
+
+        if (!this.player.alive || this.nextShotAt>game.time.now)
+            return;
+        // if (this.bulletPool.countDead()==0)
+        //     return;
+        this.emitter = game.add.emitter(0, 0, 150);
+        this.emitter.makeParticles('pixel');
+        this.emitter.setYSpeed(-500, 500);
+        this.emitter.setXSpeed(-500, 500);
+        this.emitter.setScale(2, 0, 2, 0, 800);
+        this.emitter.gravity = 0;
+        this.emitter.scale.setTo(0.5,0.5);
+
+        this.emitter.x = this.player.x;
+        this.emitter.y = this.player.y+20; 
+        this.emitter.start(true, 800, null, 15);
+        
+
+        this.nextShotAt = game.time.now + this.shotDelay;
+        var bullet = this.bulletPool12.getFirstExists(false);
+        // bullet.angle=-90;
+        bullet.scale.setTo(0.8,0.8);
+        bullet.reset(this.player.x, this.player.y-20);
+        bullet.body.velocity.x = 250;
+        bullet.play('bullet12',true,true);
+    },
+    playerFire13: function() { 
+        //sound
+        // this.player_fireSound.play();
+        this.firekingSound.play();
+
+        if (!this.player.alive || this.nextShotAt>game.time.now)
+            return;
+        // if (this.bulletPool.countDead()==0)
+        //     return;
+
+        ///emitter
+        this.emitter = game.add.emitter(0, 0, 150);
+        this.emitter.makeParticles('pixel');
+        this.emitter.setYSpeed(-500, 500);
+        this.emitter.setXSpeed(-500, 500);
+        this.emitter.setScale(2, 0, 2, 0, 800);
+        this.emitter.gravity = 0;
+        // this.emitter.scale.setTo(0.1,0.1);
+
+        this.emitter.x = this.player.x;
+        this.emitter.y = this.player.y; 
+        this.emitter.start(true, 800, null, 15);
+        
+        this.nextShotAt = game.time.now + this.shotDelay;
+        var bullet = this.bulletPool13.getFirstExists(false);
+        bullet.angle=-90;
+        bullet.scale.setTo(3,3);
+        bullet.reset(this.player.x, this.player.y-20);
+        bullet.body.velocity.x = 100;
+        bullet.play('bullet13',true,true);
+    },
+
     player2Fire: function() { 
         //sound
         this.player_fireSound.play();

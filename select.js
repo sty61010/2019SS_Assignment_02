@@ -45,7 +45,7 @@ var endState = {
     playClick:function(){
         score=0;
         outcome=0;
-        game.state.start('play');
+        game.state.start('level1');
     },
     settingClick:function(){
         game.state.start('setting');

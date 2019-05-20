@@ -137,7 +137,7 @@ var level1State = {
         this.emitter.gravity = 0;
     },
     createPlayer:function(){
-        this.player = game.add.sprite(400, 550, 'player');
+        this.player = game.add.sprite(400, 300, 'player');
         this.player.anchor.setTo(0.5);
         this.player.animations.add('player_fly', [ 1, 2, 3], 5, true);
         this.player.play('player_fly');
@@ -148,7 +148,7 @@ var level1State = {
         this.player.scale.setTo(0.7,0.7);
     },
     createPlayer2:function(){
-        this.player2 = game.add.sprite(400, 550, 'player2');
+        this.player2 = game.add.sprite(400, 300, 'player2');
         this.player2.anchor.setTo(0.5);
         // this.player2.animations.add('player_fly', [ 1, 2, 3], 5, true);
         // this.player.animations.add('player_fly', [ 0, 1, 2], 5, true);
