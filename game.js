@@ -4,7 +4,7 @@ var scoreText;
 var stateText;
 
 var outcome=0;
-var p2=0;
+var p2=1;
 var lives;
 var bosslives=9999999;
 var bossString='';
@@ -13,6 +13,7 @@ var soundmute=0;
 var musicmute=0;
 var pause=0;
 var lh=1;
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas');
 // game.global = { score: 0 };
 // Add all the states

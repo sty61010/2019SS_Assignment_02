@@ -325,6 +325,15 @@ var level3State = {
     ///update
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     update: function() {
+        ///pause
+        if(game.input.keyboard.isDown(Phaser.Keyboard.P)){
+            if(pause==0) pause=1;
+            else pause=0;
+        }
+        ///control
+        if(pause==0){
+            
+        }
         ///  Scroll the background
         this.bg.tilePosition.x -= 2;        
         ///enemy
