@@ -45,7 +45,7 @@ var level2State = {
         game.load.audio('fireking', 'assets/ace_fireking.wav');
         game.load.audio('firering', 'assets/ace_firering.wav');
         game.load.audio('firefist', 'assets/ace_firefist.wav')
-        
+        game.load.audio('music', 'assets/music.wav');
     },
     ///create
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +98,9 @@ var level2State = {
         ///level
         game.add.text(game.world.width/2-75, 10, 'Level 2 ', { font: '50px Georgia', fill: '#000' });
 
+        ///music
+        if(musicmute==0)
+            this.musicSound.play();
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     createBoss:function(){
@@ -119,6 +122,9 @@ var level2State = {
         this.coinSound=game.add.audio('coin');
         this.magnetSound=game.add.audio('magnet');
         this.roarSound=game.add.audio('roar');
+
+        this.musicSound=game.add.audio('music');
+        this.musicSound.loop=true;
 
         this.firefistSound=game.add.audio('firefist');
         this.firekingSound=game.add.audio('fireking');
@@ -151,7 +157,7 @@ var level2State = {
         this.player.scale.setTo(0.7,0.7);
     },
     createPlayer2:function(){
-        this.player2 = game.add.sprite(400, 300, 'player2');
+        this.player2 = game.add.sprite(50, 300, 'player2');
         this.player2.anchor.setTo(0.5);
         // this.player2.animations.add('player_fly', [ 1, 2, 3], 5, true);
         // this.player.animations.add('player_fly', [ 0, 1, 2], 5, true);
@@ -306,7 +312,8 @@ var level2State = {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     playerMagnet:function(player, enemy){
         ///sound
-        this.magnetSound.play();
+        if(soundmute==0)
+            this.magnetSound.play();
         enemy.kill();
         ///ice
         var ice = game.add.sprite(player.x, player.y, 'ice');
@@ -332,7 +339,8 @@ var level2State = {
     },
     playerExplosion: function() {
         ///sound
-        this.firefistSound.play();
+        if(soundmute==0)
+            this.firefistSound.play();
         ///emitter
         this.emitter = game.add.emitter(0, 0, 150);
         this.emitter.makeParticles('pixel');
@@ -424,7 +432,8 @@ var level2State = {
     },
     coinHit:function(play,coin){
         ///sound
-        this.coinSound.play();
+        if(soundmute==0)
+            this.coinSound.play();
         ///Increase the score
         score += 20;
         scoreText.text = scoreString + score;
@@ -445,7 +454,8 @@ var level2State = {
     },
     obstacleHit: function(enemy, obstacle) { 
         ///sound
-        this.magnetSound.play();
+        if(soundmute==0)
+            this.magnetSound.play();
         ///Increase the score
         score += 100;
         scoreText.text = scoreString + score;
@@ -470,7 +480,8 @@ var level2State = {
     },
     enemyHit: function(bullet, enemy) {
         ///sound
-        this.enemy_explosionSound.play();
+        if(soundmute==0)
+            this.enemy_explosionSound.play();
         ///Increase the score
         score += 10;
         scoreText.text = scoreString + score;
@@ -496,7 +507,8 @@ var level2State = {
     },
     enemyHit2: function(bullet, enemy) {
         ///sound
-        this.enemy_explosionSound.play();
+        if(soundmute==0)
+            this.enemy_explosionSound.play();
         ///Increase the score
         score += 10;
         scoreText.text = scoreString + score;
@@ -523,7 +535,8 @@ var level2State = {
     },
     playerHit: function(player, enemy) { 
         ///sound
-        this.player_explosionSound.play();
+        if(soundmute==0)
+            this.player_explosionSound.play();
         enemy.kill();
         ///explosioin
         var explosion = game.add.sprite(player.x, player.y, 'explosion');
@@ -549,7 +562,8 @@ var level2State = {
     },
     playerFire: function() { 
         //sound
-        this.player_fireSound.play();
+        if(soundmute==0)
+            this.player_fireSound.play();
 
         if (!this.player.alive || this.nextShotAt>game.time.now)
             return;
@@ -566,7 +580,8 @@ var level2State = {
     playerFire12: function() { 
         //sound
         // this.roarSound.play();
-        this.fireringSound.play();
+        if(soundmute==0)
+            this.fireringSound.play();
 
         if (!this.player.alive || this.nextShotAt>game.time.now)
             return;
@@ -595,8 +610,8 @@ var level2State = {
     },
     playerFire13: function() { 
         //sound
-        // this.player_fireSound.play();
-        this.firekingSound.play();
+        if(soundmute==0)
+            this.firekingSound.play();
 
         if (!this.player.alive || this.nextShotAt>game.time.now)
             return;
@@ -626,7 +641,8 @@ var level2State = {
     },
     player2Fire: function() { 
         //sound
-        this.player_fireSound.play();
+        if(soundmute==0)
+            this.player_fireSound.play();
 
         if (!this.player2.alive || this.nextShotAt>game.time.now)
             return;

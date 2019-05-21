@@ -36,6 +36,7 @@ var playState = {
         game.load.audio('coin', 'assets/coin.wav');
         game.load.audio('magnet', 'assets/magnet.wav');
         game.load.audio('roar', 'assets/ace-bomb.wav');
+        game.load.audio('music', 'assets/music.wav');
         
     },
     ///create
@@ -84,6 +85,9 @@ var playState = {
         stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Georgia', fill: '#000' });
         stateText.anchor.setTo(0.5, 0.5);
         stateText.visible = false;
+        ///music
+        if(musicmute==0)
+            this.musicSound.play();
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     createBoss:function(){
@@ -108,6 +112,7 @@ var playState = {
         this.coinSound=game.add.audio('coin');
         this.magnetSound=game.add.audio('magnet');
         this.roarSound=game.add.audio('roar');
+        this.musicSound=game.add.audio('music');
     },
     createParitcle:function(){
         this.particlePool=game.add.group();

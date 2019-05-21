@@ -20,27 +20,31 @@ var endState = {
         this.play_bt.onInputOver.add(this.buttonOver,this);
         this.setting_bt.onInputOver.add(this.buttonOver,this);
 
-        stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Georgia', fill: '#000' });
-        stateText.anchor.setTo(0.5, 0.5);
-        stateText.visible = false;
+        stateText.text=scoreString+score;
+        game.add.text(game.world.centerX-272, 320, stateText.text, { font: '50px Georgia', fill: '#fff' });
+
     },
     loseScreen:function(){
         // background
         this.lose_bg=game.add.image(0,0,'lose_bg');
         this.lose_bg.scale.setTo(0.5,0.5);
+        game.add.text(game.world.centerX-272, 400, 'You Lose', { font: '50px Georgia', fill: '#fff' });
+
     },
     winScreen:function(){
         // background 
         this.win_bg=game.add.image(-200,0,'win_bg');
         this.win_bg.scale.setTo(0.68,0.68);
+        game.add.text(game.world.centerX-272, 400, 'You Win', { font: '50px Georgia', fill: '#fff' });
 
-        scoreText.text = scoreString + score;
-        stateText.text = " You Won \n";
-        stateText.visible = true;
+        // scoreText.text = scoreString + score;
+        // stateText.text = " You Won \n";
+        // stateText.visible = true;
     },
     buttonOver:function(){
         this.buttonSound=game.add.audio('button_sound');
-        this.buttonSound.play();
+        if(soundmute==0)
+            this.buttonSound.play();
     },
     playClick:function(){
         score=0;

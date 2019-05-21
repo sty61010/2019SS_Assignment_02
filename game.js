@@ -4,7 +4,7 @@ var scoreText;
 var stateText;
 
 var outcome=0;
-var p2=1;
+var p2=0;
 var lives;
 var bosslives=9999999;
 var bossString='';

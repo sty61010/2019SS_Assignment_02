@@ -19,13 +19,12 @@ var startState = {
         this.setting_bt.onInputOver.add(this.buttonOver,this);
         this.credict_bt.onInputOver.add(this.buttonOver,this);
 
-        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) ) {
-            this.playClick();
-        }
+
     },
     buttonOver:function(){
         this.buttonSound=game.add.audio('button_sound');
-        this.buttonSound.play();
+        if(soundmute==0)
+            this.buttonSound.play();
     },
     playClick:function(){
         score=0;
@@ -39,7 +38,9 @@ var startState = {
 
     },
     update: function() {
-
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) ) {
+            this.playClick();
+        }
     }
 };
 

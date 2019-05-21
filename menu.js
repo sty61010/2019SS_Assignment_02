@@ -25,7 +25,8 @@ var menuState = {
     },
     buttonOver:function(){
         this.buttonSound=game.add.audio('button_sound');
-        this.buttonSound.play();
+        if(soundmute==0)
+            this.buttonSound.play();
     },
     playClick:function(){
         score=0;
