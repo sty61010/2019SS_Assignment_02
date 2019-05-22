@@ -20,15 +20,15 @@
 
 # Basic Components Description : 
 1. [Jucify mechanisms] (15%): [
-* there are several roles in the game:
-* SpongeBob SquarePant:
-![](https://i.imgur.com/bqKxpig.png)
-(1)Patrick Star:
-* main enemy
-* attacking by touching.
-* killed by bullet or special skill
-*random movement
-*[](https://i.imgur.com/D4VwjaY.png)
+    * there are several roles in the game:
+    * SpongeBob SquarePant:
+    ![](https://i.imgur.com/bqKxpig.png)
+    (1)Patrick Star:
+        a.main enemy
+        b.attacking by touching.
+        c.killed by bullet or special skill
+        d.random movement
+        [](https://i.imgur.com/D4VwjaY.png)
 (2)Squidward:
 a.enemy or helper(in different level)
 b.attacking by touching, unkillable 
