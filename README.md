@@ -24,7 +24,7 @@
     * SpongeBob SquarePant:
     ![](https://i.imgur.com/bqKxpig.png)
     (1)Patrick Star:
-        a.main enemy
+    a.main enemy
         b.attacking by touching.
         c.killed by bullet or special skill
         d.random movement
