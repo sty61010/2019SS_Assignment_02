@@ -20,15 +20,15 @@
 
 # Basic Components Description : 
 1. [Jucify mechanisms] (15%): [
-there are several roles in the game:
-SpongeBob SquarePant:
+* there are several roles in the game:
+* SpongeBob SquarePant:
 ![](https://i.imgur.com/bqKxpig.png)
 (1)Patrick Star:
-a.main enemy
-b.attacking by touching.
-c.killed by bullet or special skill
-d.random movement
-![](https://i.imgur.com/D4VwjaY.png)
+* main enemy
+* attacking by touching.
+* killed by bullet or special skill
+*random movement
+*[](https://i.imgur.com/D4VwjaY.png)
 (2)Squidward:
 a.enemy or helper(in different level)
 b.attacking by touching, unkillable 
@@ -38,15 +38,15 @@ e.it can also kill Patrick Star
 f.random movement
 ![](https://i.imgur.com/yFrFjRg.png)
 (3)SpongeBob SquarePants:
-a.boss
-b.with blood limit
-c.automatic movememt
-d.automatic attack
+* boss
+* with blood limit
+* automatic movememt
+* automatic attack
 ![](https://i.imgur.com/NtbtEzY.png)
 (4)Gary the Snail
-a.coin(bonus)
-c.random movement
-One piece:
+* coin(bonus)
+* random movement
+* One piece:
 ![](https://i.imgur.com/a6x2HsJ.png)
 (1) Portgas D. Ace:
 a.the main control character(p1)
@@ -90,7 +90,6 @@ e.unkillable
 Coin:
 (1)Gary the Snail(touching get points)
 a.get 20 points by getting each.
-
 (3) Level3:(Score>3000)
 Enemy:
 (1)Patrick Star(touching attack):
