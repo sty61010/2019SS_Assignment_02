@@ -292,31 +292,31 @@ var level2State = {
         }
         ///control
         if(pause==0){
-            
+            ///  Scroll the background
+            this.bg.tilePosition.x -= 2;        
+            ///enemy
+            this.GenerateEnemy();
+            ///obstacle
+            this.GenerateObstacle();
+            ///coin
+            this.GenerateCoin();
+            ///player
+            this.MovePlayer();
+            ///player2
+            if(p2==1)
+                this.MovePlayer2();
+            ///collide
+            game.physics.arcade.overlap(this.player, this.enemyPool, this.playerHit, null, this);
+            game.physics.arcade.overlap(this.bulletPool, this.enemyPool, this.enemyHit, null, this);
+            game.physics.arcade.overlap(this.enemyPool, this.obstaclePool, this.obstacleHit, null, this);
+            game.physics.arcade.collide(this.player, this.obstaclePool, this.playerMagnet, null, this);
+            game.physics.arcade.collide(this.player, this.coinPool, this.coinHit, null, this);
+            game.physics.arcade.overlap(this.bulletPool2, this.enemyPool, this.enemyHit, null, this);
+            game.physics.arcade.overlap(this.bulletPool12, this.enemyPool, this.enemyHit2, null, this);
+            game.physics.arcade.overlap(this.bulletPool13, this.enemyPool, this.enemyHit2, null, this);
+
         }
-        ///  Scroll the background
-        this.bg.tilePosition.x -= 2;        
-        ///enemy
-        this.GenerateEnemy();
-        ///obstacle
-        this.GenerateObstacle();
-        ///coin
-        this.GenerateCoin();
-        ///player
-        this.MovePlayer();
-        ///player2
-        if(p2==1)
-            this.MovePlayer2();
-        ///collide
-        game.physics.arcade.overlap(this.player, this.enemyPool, this.playerHit, null, this);
-        game.physics.arcade.overlap(this.bulletPool, this.enemyPool, this.enemyHit, null, this);
-        game.physics.arcade.overlap(this.enemyPool, this.obstaclePool, this.obstacleHit, null, this);
-        game.physics.arcade.collide(this.player, this.obstaclePool, this.playerMagnet, null, this);
-        game.physics.arcade.collide(this.player, this.coinPool, this.coinHit, null, this);
-        game.physics.arcade.overlap(this.bulletPool2, this.enemyPool, this.enemyHit, null, this);
-        game.physics.arcade.overlap(this.bulletPool12, this.enemyPool, this.enemyHit2, null, this);
-        game.physics.arcade.overlap(this.bulletPool13, this.enemyPool, this.enemyHit2, null, this);
-        // game.physics.arcade.overlap(this.enemy, this.emitter, null, null,this);
+
     }, 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     playerMagnet:function(player, enemy){

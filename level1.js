@@ -287,32 +287,31 @@ var level1State = {
             else pause=0;
         }
         if(pause==0){
-            
-        }
-        ///  Scroll the background
-        this.bg.tilePosition.x -= 2;        
-        ///enemy
-        this.GenerateEnemy();
-        ///obstacle
-        this.GenerateObstacle();
-        ///coin
-        this.GenerateCoin();
-        ///player
-        this.MovePlayer();
-        ///player2
-        if(p2==1)
-            this.MovePlayer2();
-        ///collide
-        game.physics.arcade.overlap(this.player, this.enemyPool, this.playerHit, null, this);
-        game.physics.arcade.overlap(this.bulletPool, this.enemyPool, this.enemyHit, null, this);
-        game.physics.arcade.overlap(this.enemyPool, this.obstaclePool, this.obstacleHit, null, this);
-        game.physics.arcade.collide(this.player, this.obstaclePool, this.playerMagnet, null, this);
-        game.physics.arcade.collide(this.player, this.coinPool, this.coinHit, null, this);
-        game.physics.arcade.overlap(this.bulletPool2, this.enemyPool, this.enemyHit, null, this);
-        game.physics.arcade.overlap(this.bulletPool12, this.enemyPool, this.enemyHit2, null, this);
-        game.physics.arcade.overlap(this.bulletPool13, this.enemyPool, this.enemyHit2, null, this);
+            ///  Scroll the background
+            this.bg.tilePosition.x -= 2;        
+            ///enemy
+            this.GenerateEnemy();
+            ///obstacle
+            this.GenerateObstacle();
+            ///coin
+            this.GenerateCoin();
+            ///player
+            this.MovePlayer();
+            ///player2
+            if(p2==1)
+                this.MovePlayer2();
+            ///collide
+            game.physics.arcade.overlap(this.player, this.enemyPool, this.playerHit, null, this);
+            game.physics.arcade.overlap(this.bulletPool, this.enemyPool, this.enemyHit, null, this);
+            game.physics.arcade.overlap(this.enemyPool, this.obstaclePool, this.obstacleHit, null, this);
+            game.physics.arcade.collide(this.player, this.obstaclePool, this.playerMagnet, null, this);
+            game.physics.arcade.collide(this.player, this.coinPool, this.coinHit, null, this);
+            game.physics.arcade.overlap(this.bulletPool2, this.enemyPool, this.enemyHit, null, this);
+            game.physics.arcade.overlap(this.bulletPool12, this.enemyPool, this.enemyHit2, null, this);
+            game.physics.arcade.overlap(this.bulletPool13, this.enemyPool, this.enemyHit2, null, this);
 
-        // game.physics.arcade.overlap(this.enemy, this.emitter, null, null,this);
+        }
+
     }, 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     playerMagnet:function(){
@@ -339,15 +338,18 @@ var level1State = {
         this.emitter.start(true, 800, null, 15);
     },
     GenerateObstacle: function(){
-        if (this.nextobstacleAt<game.time.now && this.obstaclePool.countDead()>0) {
-            this.nextobstacleAt = game.time.now + this.obstacleDelay;
-            var obstacle = this.obstaclePool.getFirstExists(false);
-            obstacle.reset(780, game.rnd.integerInRange(20, 580));
-            obstacle.body.velocity.y = game.rnd.integerInRange(-100, 120);
-            // obstacle.reset(0,game.rnd.integerInRange(20, 580));
-            obstacle.body.velocity.x = -game.rnd.integerInRange(30, 160);
-            obstacle.play('obstacle_fly');
+        if(pause==0){
+            if (this.nextobstacleAt<game.time.now && this.obstaclePool.countDead()>0) {
+                this.nextobstacleAt = game.time.now + this.obstacleDelay;
+                var obstacle = this.obstaclePool.getFirstExists(false);
+                obstacle.reset(780, game.rnd.integerInRange(20, 580));
+                obstacle.body.velocity.y = game.rnd.integerInRange(-100, 120);
+                // obstacle.reset(0,game.rnd.integerInRange(20, 580));
+                obstacle.body.velocity.x = -game.rnd.integerInRange(30, 160);
+                obstacle.play('obstacle_fly');
+            }
         }
+
     },
     GenerateEnemy: function(){
         if (this.nextEnemyAt<game.time.now && this.enemyPool.countDead()>0) {
@@ -625,7 +627,7 @@ var level1State = {
         bullet.angle=-90;
         bullet.scale.setTo(3,3);
         bullet.reset(this.player.x, this.player.y-20);
-        bullet.body.velocity.x = 100;
+        if(pause==0)bullet.body.velocity.x = 100;
         bullet.play('bullet13',true,true);
     },
     player2Fire: function() { 

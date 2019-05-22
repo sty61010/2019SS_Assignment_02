@@ -19,6 +19,19 @@ var menuState = {
         this.setting_bt.onInputOver.add(this.buttonOver,this);
         // this.credict_bt.onInputOver.add(this.buttonOver,this);
 
+        game.add.text(game.world.centerX-50, 100, 'P1:', { font: '40px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX-50, 150, 'Movement:Up/Down/Right/Left', { font: '30px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX-50, 200, 'Shooting:Space', { font: '30px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX-50, 250, 'Spcial:Z/X/C', { font: '30px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX-50, 300, 'Pause:P', { font: '30px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX-50, 350, 'cheeting:Win:K/Lose:L', { font: '30px Georgia', fill: '#fff' });
+
+        game.add.text(game.world.centerX-50, 400, 'P2:', { font: '40px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX-50, 450, 'Movement:W/A/S/D', { font: '30px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX-50, 500, 'Shooting:Q', { font: '30px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX-50, 0, 'Others:', { font: '40px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX-50, 50, 'Check Setting Page', { font: '30px Georgia', fill: '#fff' });
+
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) ) {
             this.playClick();
         }

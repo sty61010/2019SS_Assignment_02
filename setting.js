@@ -14,6 +14,8 @@ var settingState = {
     create: function() {
         this.setting_bg=game.add.image(0,0,'setting_bg');
         this.setting_bg.scale.setTo(0.85,0.85);
+        this.setting_bg.alpha=0.8;
+
         this.p_bt = game.add.button(game.world.centerX +200, 50, 'p_bt', this.playClick, this, 1, 0, 0);
         this.p_bt.scale.setTo(0.5,0.5);
         this.music_bt = game.add.button(game.world.centerX +200, 130, 'music_bt', this.soundClick, this, 1, 0, 0);
@@ -26,6 +28,13 @@ var settingState = {
         this.lock_bt.scale.setTo(0.5,0.5);
         this.p2_bt = game.add.button(game.world.centerX +200, 450, 'p2_bt', this.player2Click, this, 1, 0, 0);
         this.p2_bt.scale.setTo(0.5,0.5);
+
+        game.add.text(game.world.centerX+285, 65, 'Play', { font: '40px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX+285, 145, 'Sound', { font: '40px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX+285, 225, 'Music', { font: '40px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX+285, 305, 'Score', { font: '40px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX+285, 385, 'Menu', { font: '40px Georgia', fill: '#fff' });
+        game.add.text(game.world.centerX+285, 465, 'P2', { font: '40px Georgia', fill: '#fff' });
 
         this.p_bt.onInputOver.add(this.buttonOver,this);
         this.music_bt.onInputOver.add(this.buttonOver,this);

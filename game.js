@@ -13,7 +13,7 @@ var soundmute=0;
 var musicmute=0;
 var pause=0;
 var lh=1;
-
+var menutext;
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas');
 // game.global = { score: 0 };
 // Add all the states
