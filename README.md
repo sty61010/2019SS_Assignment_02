@@ -315,3 +315,5 @@ e.automatic movement
 12. Appearence:5%
 
 If there is any confusing point, please contact me(106034061),I utterly appriciate it.
+
+
