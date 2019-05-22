@@ -64,8 +64,60 @@ d.automatically detect player's position.
 e.automatic movement
 there are three level in the game:
 (1) Level1:
-(2) Level2:
-(3) Level3:
+Enemy:
+(1)Patrick Star(touching attack):
+a.get 10 points by killing each. 
+Coin:
+(1)Gary the Snail(touching get points)
+a.get 20 points by getting each.
+Tools:
+(1)Squidward(collide)
+a.if it touch enemy, enemy will be kill.
+b.if player touch it, it can be collide like             pinpon
+c.special kill will earn you 50 points
+d.special magnet sound.
+e.unkillable
+(2) Level2:(score>1000)
+Enemy:
+(1)Patrick Star(touching attack):
+a.get 10 points by killing each. 
+(2)Squidward(collide)
+a.if it touch enemy, enemy will be kill.
+b.if player touch it, player will be kill                 one live
+c.special kill will earn you 50 points
+d.special magnet sound.
+e.unkillable
+Coin:
+(1)Gary the Snail(touching get points)
+a.get 20 points by getting each.
+
+(3) Level3:(Score>3000)
+Enemy:
+(1)Patrick Star(touching attack):
+a.get 10 points by killing each. 
+(2)Squidward(collide)
+a.if it touch enemy, enemy will be kill.
+b.if player touch it, player will be kill one live
+c.special kill will earn you 50 points
+d.special magnet sound.
+e.unkillable
+(3)SpongeBob SquarePants:
+a.boss
+b.with blood limit
+c.automatic movememt
+d.automatic attack
+e.if player touch it, player will be kill one live
+Coin:
+(1)Gary the Snail(touching get points)
+a.get 20 points by getting each.
+Little Helper:
+(1)Tony Tony Chopper:
+a.little helper 
+b.accompany with main character
+c.automatically shoot.
+d.automatically detect player's position.
+e.automatic movement
+* You will win when score >=7000 or boss is killed.
 ]
 2. [Animations] (10%): [
 SpongeBob SquarePant:

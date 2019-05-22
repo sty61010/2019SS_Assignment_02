@@ -228,7 +228,7 @@ var level2State = {
             enemy.animations.add('enemy_fly',[0, 1, 2, 3, 4], 15, true);
         });
         this.nextEnemyAt = 0;
-        this.enemyDelay = 500;
+        this.enemyDelay = 50;
     },
     createBullet:function(){
         this.bulletPool = game.add.group();
@@ -446,7 +446,7 @@ var level2State = {
         ///Increase the score
         score += 20;
         scoreText.text = scoreString + score;
-        if (score>=2000)
+        if (score>=4000)
         {
 
             scoreText.text = scoreString + score;
@@ -468,7 +468,7 @@ var level2State = {
         ///Increase the score
         score += 100;
         scoreText.text = scoreString + score;
-        if (score>2000)
+        if (score>4000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
@@ -494,7 +494,7 @@ var level2State = {
         ///Increase the score
         score += 10;
         scoreText.text = scoreString + score;
-        if (score>=2000)
+        if (score>=4000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
@@ -521,7 +521,7 @@ var level2State = {
         ///Increase the score
         score += 10;
         scoreText.text = scoreString + score;
-        if (score>=2000)
+        if (score>=4000)
         {
 
 

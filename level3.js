@@ -375,6 +375,8 @@ var level3State = {
             game.physics.arcade.overlap(this.bulletPool, this.boss, this.bossHit, null, this);
             game.physics.arcade.overlap(this.bulletPool12, this.boss, this.bossHit, null, this);
             game.physics.arcade.overlap(this.bulletPool13, this.boss, this.bossHit, null, this);
+            game.physics.arcade.overlap(this.bulletPool2, this.boss, this.bossHit, null, this);
+
             game.physics.arcade.overlap(this.player, this.b_bulletPool, this.playerHit, null, this);
         }
 
@@ -399,6 +401,9 @@ var level3State = {
         this.emitter.x = this.player.x;
         this.emitter.y = this.player.y; 
         this.emitter.start(true, 800, null, 15);
+
+        var live = lives.create(game.world.width - 100 + (30 * i), 60, 'live');
+
     },
     GenerateObstacle: function(){
         if (this.nextobstacleAt<game.time.now && this.obstaclePool.countDead()>0) {
@@ -538,7 +543,7 @@ var level3State = {
         ///Increase the score
         score += 20;
         scoreText.text = scoreString + score;
-        if (score>=5000)
+        if (score>=7000)
         {
 
             scoreText.text = scoreString + score;
@@ -560,7 +565,7 @@ var level3State = {
         ///Increase the score
         score += 100;
         scoreText.text = scoreString + score;
-        if (score>=5000)
+        if (score>=7000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
@@ -586,7 +591,7 @@ var level3State = {
         ///Increase the score
         score += 10;
         scoreText.text = scoreString + score;
-        if (score>=5000)
+        if (score>=7000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
@@ -613,7 +618,7 @@ var level3State = {
         ///Increase the score
         score += 10;
         scoreText.text = scoreString + score;
-        if (score>=5000)
+        if (score>=7000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
@@ -642,7 +647,7 @@ var level3State = {
         ///Increase the score
         score += 1;
         scoreText.text = scoreString + score;
-        if (score>=5000)
+        if (score>=7000)
         {
             scoreText.text = scoreString + score;
             stateText.text = " You Won, \n Click to restart";
