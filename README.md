@@ -22,7 +22,9 @@
 1. [Jucify mechanisms] (15%): [
     * there are several roles in the game:
     * SpongeBob SquarePant:
+    
     ![](https://i.imgur.com/bqKxpig.png)
+    
     (1)Patrick Star:
     a.main enemy
         b.attacking by touching.
