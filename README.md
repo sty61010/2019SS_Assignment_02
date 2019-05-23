@@ -3,7 +3,7 @@
 106034061 曾靖渝
 ## Notice
 * Replace all [xxxx] to your answer
-
+https://106034061.gitlab.io/assignment_02/
 ## Basic Components
 |Component|Score|Y/N|
 |:-:|:-:|:-:|
