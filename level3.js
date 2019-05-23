@@ -114,8 +114,8 @@ var level3State = {
         bosstext = game.add.text(game.world.width/2-75, 550, bossString + bosslives, { font: '34px Georgia', fill: '#000' });
  
         ///music
-        if(musicmute==0)
-            this.musicSound.play();
+        // if(musicmute==0)
+            // this.musicSound.play();
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     createBoss:function(){

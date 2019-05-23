@@ -99,8 +99,8 @@ var level2State = {
         game.add.text(game.world.width/2-75, 10, 'Level 2 ', { font: '50px Georgia', fill: '#000' });
 
         ///music
-        if(musicmute==0)
-            this.musicSound.play();
+        // if(musicmute==0)
+            // this.musicSound.play();
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     createBoss:function(){
