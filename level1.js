@@ -4,6 +4,8 @@ var level1State = {
         /// Loat game image
         game.load.image('background', 'assets/background.png');
         game.load.image('pixel', 'assets/flame.png');
+        game.load.image('pixel2', 'assets/pixel.png');
+
         game.load.image('live', 'assets/live.png');
         /// Load block spritesheet.
         game.load.spritesheet('obstacle', 'assets/obstacle.png', 46, 100);
@@ -488,6 +490,18 @@ var level1State = {
         enemy.animations.add('enemy_hit',[5, 6], 20, true);
         enemy.play('enemy_hit');
         bullet.kill();
+        ///emitter
+        this.emitter = game.add.emitter(0, 0, 150);
+        this.emitter.makeParticles('pixel2');
+        this.emitter.setYSpeed(-500, 500);
+        this.emitter.setXSpeed(-500, 500);
+        this.emitter.setScale(2, 0, 2, 0, 800);
+        this.emitter.gravity = 0;
+        // this.emitter.scale.setTo(0.1,0.1);
+
+        this.emitter.x = enemy.x;
+        this.emitter.y = enemy.y; 
+        this.emitter.start(true, 800, null, 15);
         ///explosion
         var explosion = game.add.sprite(enemy.x, enemy.y, 'explosion');
         explosion.anchor.setTo(0.5);
