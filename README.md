@@ -157,6 +157,11 @@ a.Fire Fist(Large Particle Explosion)(Press Z)
 b.Fire Dragon(With little Particle Explosion)(Press X)
 ![](https://i.imgur.com/Kg4ic2h.jpg)
 c.Fire King(Large Particle Explosion with Sun)(Press C)
+(2)Particle systems to player’s and enemy’s
+bullets:
+a.bullet explosion 
+![](https://i.imgur.com/3W4HbDz.png)
+
 ]
 4. [Sound effects] (5%): [
 there are several roles in the game:
@@ -247,6 +252,8 @@ a.boss
 b.with blood limit
 c.automatic movememt
 d.automatic attack
+e.accept combo attack(not a bug), to excite you when playing
+
 
 ]
 2. [Offline Mutiplayer] (5%) : [
@@ -296,9 +303,20 @@ b.accompany with main character
 c.automatically shoot.
 d.automatically detect player's position.
 e.automatic movement
+f.combo attack(automatic shoot)
 ]
-5. []:[]
-## Total Score:100+5(+5 for appearance)
+5. [Bullet Automatic Aiming](5%):[
+![](https://i.imgur.com/XvbPqWq.png)
+(1)If you let player2 to exist in level3, the P2(Marco)'s flame can automatically aim to the boss.
+]
+* others
+6. [PinPon functin]:[
+(1)In level1, you can attack enemy by colliding with Squidward. and you will get bonus score.
+]
+7. [combo attack]:[
+(1)In level3, you can attack boss with combo attack, in order to enhance the feeling of the game, I let the boss has a lot of blood(999999)
+]
+## Total Score:105+5(+5 for appearance)
 [Basic]
 1. Complete game process:15%    
 2. Basic rules:20%
@@ -312,8 +330,7 @@ e.automatic movement
 9. Unique bullet : 5%
 10. Little helper : 5%
 11. Boss: Unique movement and attack-mode : 5%
-12. Appearence:5%
+12. Bullet automatic aiming:5%
+13. Appearence:5%
 
 If there is any confusing point, please contact me(106034061),I utterly appriciate it.
-
-

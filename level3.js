@@ -804,7 +804,8 @@ var level3State = {
         bullet2.angle=90;
         bullet2.scale.setTo(2,2);
         bullet2.reset(this.player2.x, this.player2.y-20);
-        bullet2.body.velocity.x = 500;
+        bullet2.body.velocity.x = this.boss.x-this.player2.x;
+        bullet2.body.velocity.y = this.boss.y-this.player2.y;
         bullet2.play('bullet2',true,true);
     },
 };
